@@ -1,0 +1,8 @@
+{
+  "name": "offroapp",
+  "app_id": "8cbb75ea",
+  "type": "ionic-angular",
+  "integrations": {
+    "cordova": {}
+  }
+}
