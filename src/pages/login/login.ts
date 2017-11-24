@@ -1,16 +1,39 @@
 import { Component } from '@angular/core';
-import { ContactPage } from '../promo/contact/contact';
-import { HomePage } from '../promo/home/home';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { User } from "../../models/user";
+import { AngularFireAuth } from "angularfire2/auth";
 
+/**
+ * Generated class for the LoginPage page.
+ *
+ * See https://ionicframework.com/docs/components/#navigation for more info on
+ * Ionic pages and navigation.
+ */
+
+@IonicPage()
 @Component({
-  templateUrl: 'login.html'
+  selector: 'page-login',
+  templateUrl: 'login.html',
 })
 export class LoginPage {
+    user = {} as User; 
+    constructor(private afAuth: AngularFireAuth, public navCtrl: NavController, public navParams: NavParams) {
+    }
 
-  tab1Root = HomePage;
-  tab3Root = ContactPage;
+    login(user: User) {
+        try {
+          const result = this.afAuth.auth.signInWithEmailAndPassword(user.email, user.password);
+          console.log(result);
+          if(result){
+            this.navCtrl.setRoot('TabsHomePage');
+          }
+        } catch (e) {
+          console.log(e);
+        }
+    }
 
-  constructor() {
-
+  register() {
+    this.navCtrl.push('RegisterPage');
   }
+
 }

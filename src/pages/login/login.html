@@ -1,4 +1,28 @@
-<ion-tabs>
-  <ion-tab [root]="tab1Root" tabTitle="Home" tabIcon="home"></ion-tab>
-  <ion-tab [root]="tab3Root" tabTitle="Contact" tabIcon="contacts"></ion-tab>
-</ion-tabs>
+<ion-header >
+  <ion-navbar class="bar_home">
+    <ion-title>OffRoapp</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding class="fondo">
+ <!-- Email Label -->
+  <ion-item class="txt-input">
+    <ion-label floating class="txt_flotante">Email Address</ion-label>
+    <ion-input type="text" [(ngModel)]="user.email"></ion-input>
+  </ion-item>
+    <br>
+    <!-- Password Label -->
+    <ion-item class="txt-input">
+      <ion-label floating class="txt_flotante">Password</ion-label>
+      <ion-input type="password" [(ngModel)]="user.password"></ion-input>
+    </ion-item>
+    <!-- Login Button -->
+    <button ion-button (click)="login(user)" class="btn-log">Login</button>
+    <br><br>
+    <!-- Register Button -->
+    <button ion-button (click)="register(user)" class="btn-log">Register</button>
+    <!-- texto informativo -->
+    <div class="txt-info">registrate en OffRoapp</div>
+</ion-content>
+
