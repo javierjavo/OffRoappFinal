@@ -5,7 +5,6 @@ import { MyApp } from './app.component';
 
 import { ContactPage } from '../pages/promo/contact/contact';
 import { HomePage } from '../pages/promo/home/home';
-import { TabsHomePage } from '../pages/promo/tabshome/tabshome';
 
 import { LoginPage } from '../pages/login/login';
 
@@ -20,7 +19,6 @@ import { FIREBASE_CONFIG } from './app.firebase.config';
     MyApp,
     ContactPage,
     HomePage,
-    TabsHomePage,
     LoginPage
   ],
   imports: [
@@ -34,7 +32,6 @@ import { FIREBASE_CONFIG } from './app.firebase.config';
     MyApp,
     ContactPage,
     HomePage,
-    TabsHomePage,
     LoginPage
   ],
   providers: [
