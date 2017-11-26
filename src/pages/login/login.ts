@@ -25,7 +25,7 @@ export class LoginPage {
           const result = this.afAuth.auth.signInWithEmailAndPassword(user.email, user.password);
           console.log(result);
           if(result){
-            this.navCtrl.setRoot('TabsHomePage');
+            //this.navCtrl.setRoot('TabsHomePage');
           }
         } catch (e) {
           console.log(e);
