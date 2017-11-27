@@ -2,7 +2,7 @@ page-register {
     .btn-log{
         width: 100%;
         height: 40px;
-        background-color: rgba(18, 189, 86, 0.80);
+        background-color: rgba(15, 165, 74, 0.9);
         border-radius: 15px;
         top:20px;
     }
@@ -15,12 +15,12 @@ page-register {
     }
     .txt-input{
         width: 100%;
-        background-color: rgba(100,100,100,.6);
+        background-color: rgba(67, 78, 65, 0.77);
         color:azure;
         border-radius: 10px;
     }
     .txt-input:focus-within{
-        background-color: rgba(100,100,100,1) !important;
+        background-color: rgba(100,100,100,.9) !important;
     }
     .txt-input{
         color: #fff !important;
@@ -29,11 +29,11 @@ page-register {
         color: rgb(0, 238, 119) !important;
     }
     .fondo{
-        background: url("../../assets/imgs/final.jpg") no-repeat fixed center;
+        background: url("../../assets/imgs/final1.jpg") no-repeat fixed center;
         -webkit-background-size: cover;
         background-size: cover;
     }
     .bar_home{
-        text-align:center;
+        
     }
 }
