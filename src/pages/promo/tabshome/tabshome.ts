@@ -19,6 +19,7 @@ export class TabsHomePage {
   }
   
   ionViewWillLoad(){
+    try{
     this.afAuth.authState.subscribe(data => {
       if(data && data.email && data.uid){
         this.toast.create({
@@ -32,8 +33,10 @@ export class TabsHomePage {
           message: 'error al iniciar sesion intente de nuevo',
           duration: 5000,
         }).present();
+        this.navCtrl.setRoot('LoginPage');
         //aqui regresar al inincio pero da un error so hay que ver que
       }
     });
+    }catch(e){}
   }
 }
