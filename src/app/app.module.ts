@@ -6,7 +6,7 @@ import { MyApp } from './app.component';
 import { ContactPage } from '../pages/promo/contact/contact';
 import { HomePage } from '../pages/promo/home/home';
 
-import { LoginPage } from '../pages/login/login';
+import { RedicPage } from '../pages/redic/redic';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -19,7 +19,7 @@ import { FIREBASE_CONFIG } from './app.firebase.config';
     MyApp,
     ContactPage,
     HomePage,
-    LoginPage
+    RedicPage
   ],
   imports: [
     BrowserModule,
@@ -32,7 +32,7 @@ import { FIREBASE_CONFIG } from './app.firebase.config';
     MyApp,
     ContactPage,
     HomePage,
-    LoginPage
+    RedicPage
   ],
   providers: [
     StatusBar,
