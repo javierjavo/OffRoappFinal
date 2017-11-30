@@ -24,7 +24,7 @@ export class TabsHomePage {
       if(data && data.email && data.uid){
         this.toast.create({
             message: 'Let\'s roll, '+data.email,
-            duration: 5000,
+            duration: 1000,
         }).present();
         // this.afAuth.auth.signOut(); // cierra la sesion
       }
@@ -35,8 +35,10 @@ export class TabsHomePage {
         }).present();
         this.navCtrl.setRoot('LoginPage');
         //aqui regresar al inincio pero da un error so hay que ver que
-      }
+        }
     });
-    }catch(e){}
+    }catch(e){
+
+    }
   }
 }

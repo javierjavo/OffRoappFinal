@@ -5,6 +5,7 @@ import { MyApp } from './app.component';
 
 import { ContactPage } from '../pages/promo/contact/contact';
 import { HomePage } from '../pages/promo/home/home';
+import { GruposPage } from '../pages/grupos/grupos';
 
 import { RedicPage } from '../pages/redic/redic';
 
@@ -19,6 +20,7 @@ import { FIREBASE_CONFIG } from './app.firebase.config';
     MyApp,
     ContactPage,
     HomePage,
+    GruposPage,
     RedicPage
   ],
   imports: [
@@ -32,6 +34,7 @@ import { FIREBASE_CONFIG } from './app.firebase.config';
     MyApp,
     ContactPage,
     HomePage,
+    GruposPage,
     RedicPage
   ],
   providers: [
