@@ -18,27 +18,4 @@ export class TabsHomePage {
 
   }
   
-  ionViewWillLoad(){
-    try{
-    this.afAuth.authState.subscribe(data => {
-      if(data && data.email && data.uid){
-        this.toast.create({
-            message: 'Let\'s roll, '+data.email,
-            duration: 1000,
-        }).present();
-        //this.afAuth.auth.signOut(); // cierra la sesion
-      }
-      else{
-        this.toast.create({
-          message: 'error al iniciar sesion intente de nuevo',
-          duration: 5000,
-        }).present();
-        this.navCtrl.setRoot('LoginPage');
-        //aqui regresar al inincio pero da un error so hay que ver que
-        }
-    });
-    }catch(e){
-
-    }
-  }
 }

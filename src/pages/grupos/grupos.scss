@@ -28,14 +28,29 @@ page-grupos {
     }
     .imgGrupo{
         position: relative;
+        top: -10px;
         border-radius: 100%;
-        width: auto;
-        height: 100%;
+        width: 60px;
+        height: 60px;
         float: left;
     }
     #gruposchat{
         position: absolute;
         height: 100%;
         width: 100%;
+    }
+    #image_zoom{
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-color:rgba(0,0,0, .6);
+        visibility: hidden;
+        z-index: 100;
+    }
+    #ima_zoom{
+        margin: 6%;
+        position: relative;
+        width: 80%;
+        height: auto;
     }
 }

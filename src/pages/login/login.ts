@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
 import { User } from "../../models/user";
 import { AngularFireAuth } from "angularfire2/auth";
 /**
@@ -15,20 +15,29 @@ import { AngularFireAuth } from "angularfire2/auth";
   templateUrl: 'login.html',
 })
 export class LoginPage {
-    user = {} as User; 
-    constructor(private afAuth: AngularFireAuth, public navCtrl: NavController, public navParams: NavParams) {
-    }
+  user = {} as User; 
+  constructor(private afAuth: AngularFireAuth, public navCtrl: NavController,private toast: ToastController, public navParams: NavParams) {
+  }
 
-    async login(user: User) {
-        try {
-          const result = this.afAuth.auth.signInWithEmailAndPassword(user.email, user.password);
-          if(result){
-            this.navCtrl.setRoot('TabsHomePage');         
+  login(user: User) {
+      try {
+        this.afAuth.auth.signInWithEmailAndPassword(user.email, user.password);
+        this.afAuth.authState.subscribe(data => {
+          if(data && data.email.length>0 && data.uid.length>0){
+            this.toast.create({
+                message: 'Let\'s roll, '+data.email,
+                duration: 1000,
+            }).present();
+            this.navCtrl.setRoot('TabsHomePage');
+            //this.afAuth.auth.signOut(); // cierra la sesion
           }
-        } catch (e) {
-          this.navCtrl.push('RegisterPage');
-        }
-    }
+          return;          
+        });  
+        
+      } catch (e) {
+        this.navCtrl.push('RegisterPage');
+      }
+  }
 
   register() {
     this.navCtrl.push('RegisterPage');

@@ -19,8 +19,4 @@ export class ChatPage {
     this.semilla = navParams.get('semilla');
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad ChatPage');
-  }
-
 }
