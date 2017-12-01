@@ -18,11 +18,17 @@ export class GruposPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad GruposPage');
+    this.mchat();
   }
-  
+
   go_chat(txt){
     this.navCtrl.setRoot('ChatPage',{semilla:txt});
   }
+
+
+  mchat() {
+    
+  }
+  
 
 }

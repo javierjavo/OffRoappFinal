@@ -26,7 +26,7 @@ export class TabsHomePage {
             message: 'Let\'s roll, '+data.email,
             duration: 1000,
         }).present();
-        // this.afAuth.auth.signOut(); // cierra la sesion
+        //this.afAuth.auth.signOut(); // cierra la sesion
       }
       else{
         this.toast.create({
