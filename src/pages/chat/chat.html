@@ -1,16 +1,25 @@
 <ion-header>
   <ion-navbar>
-    <ion-buttons left>
-      <button ion-button menuToggle>
-        <ion-icon name="menu"></ion-icon>
-      </button>
-    </ion-buttons>
+
     <ion-title>
-      OffRoapp
+      <h1 class="title"> {{ name }}</h1>
     </ion-title>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-    <p> holis {{ semilla }}</p>
+<ion-content padding class="fondo">
+  
+  <div id="chatMessages">
+      <ul *ngFor="let item of post | async">
+        <li>
+          <strong>{{item.id}}</strong>
+        </li>
+      </ul>
+  </div>
 </ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-input  type="text" [(ngModel)]="message"></ion-input>
+  </ion-toolbar>
+</ion-footer>

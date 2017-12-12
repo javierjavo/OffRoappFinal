@@ -12,18 +12,39 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content padding class="fondol">
   <div id="image_zoom" (click)="zoom_out()">
-    <img id="ima_zoom" src="" alt="">
+    
+    <div id="chatImageContainer">
+      <img id="ima_zoom" src="" alt="" >
+    </div>
+    <div id="mainImgCont"></div>
+
+    <div id="ChatOptionsContainer">
+        <button> <ion-icon ios="md-create" md="md-create"></ion-icon> </button>
+        <button><ion-icon name="reverse-camera"></ion-icon></button>
+    </div>
+
+    <div id="ChatNameContainer">
+      <h1 id="displayName" class="showName"></h1>
+    </div>
+
   </div>
+
   <div id="gruposchat">
-    <div class="itemGrup" *ngFor="let item of chats">
+    <ion-scroll class="itemGrup" *ngFor="let item of chats | async">
       <img class="imgGrupo" src={{item.url}} (click)="zoom(item)">   
       <div class="textos" (click)="go_chat(item)">
           <h2 class="name">{{item.name}}</h2>
           <h6 class="hora">{{item.hora}}</h6>
-      </div>
-      <hr class="divisor" color="gray" size=1 width="100%">
-    </div>
+          <hr class="divisor" color="gray" size=1 width="100%">
+      </div>  
+      <ion-icon class="chatOptions" ios="md-more" md="md-more"></ion-icon>
+    </ion-scroll>
+
+    <button class="btn" (click)="addChat()">
+      <ion-icon class="btnAdd" ios="ios-chatbubbles-outline" md="ios-chatbubbles-outline"></ion-icon>
+      <div class="btnAddTxt">+</div>
+    </button>
   </div>
 </ion-content>

@@ -28,7 +28,7 @@
     "angularfire2": "^5.0.0-rc.4",
     "cordova": "^7.1.0",
     "cordova-plugin-x-toast": "^2.6.0",
-    "firebase": "^4.6.2",
+    "firebase": "^4.8.0",
     "ionic": "^3.19.0",
     "ionic-angular": "3.9.2",
     "ionicons": "3.0.0",

@@ -16,24 +16,25 @@ import { AngularFireAuth } from "angularfire2/auth";
 })
 export class LoginPage {
   user = {} as User; 
-  constructor(private afAuth: AngularFireAuth, public navCtrl: NavController,private toast: ToastController, public navParams: NavParams) {
+  constructor(private afAuth: AngularFireAuth, public navCtrl: NavController,
+              private toast: ToastController, public navParams: NavParams) {
+    
   }
 
   login(user: User) {
       try {
         this.afAuth.auth.signInWithEmailAndPassword(user.email, user.password);
-        this.afAuth.authState.subscribe(data => {
+        let a = this.afAuth.authState.subscribe(data => {
           if(data && data.email.length>0 && data.uid.length>0){
             this.toast.create({
                 message: 'Let\'s roll, '+data.email,
                 duration: 1000,
             }).present();
             this.navCtrl.setRoot('TabsHomePage');
-            //this.afAuth.auth.signOut(); // cierra la sesion
           }
+          a.unsubscribe();
           return;          
-        });  
-        
+        });
       } catch (e) {
         this.navCtrl.push('RegisterPage');
       }

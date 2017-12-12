@@ -29,11 +29,14 @@ page-login {
         color: rgb(0, 238, 119) !important;
     }
     .fondo{
-        background: url("../../assets/imgs/final2.jpg") no-repeat fixed center;
+        background: url("../../assets/imgs/pick7.jpg") no-repeat fixed center;
         -webkit-background-size: cover;
         background-size: cover;
     }
     .bar_home{
         text-align:center;
+    }
+    .fondo .scroll-content{
+        overflow: hidden;
     }
 }
