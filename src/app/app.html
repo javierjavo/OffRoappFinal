@@ -6,6 +6,13 @@
     </ion-header>        
     <ion-content>
         <ion-list>
+            <div class="perfil">
+                <img src={{userpick}} alt={{username}}>
+                <div>
+                    <h4>{{username}}</h4>
+                    <ion-icon ios="md-create" md="md-create"></ion-icon>
+                </div>
+            </div>
             <ion-item (click)="go_promo()" menuClose>
                 Eventos y Promociones
             </ion-item>

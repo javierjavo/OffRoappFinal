@@ -14,7 +14,9 @@ import { AngularFireAuth } from "angularfire2/auth";
 export class MyApp {
   rootPage:any = RedicPage;
   @ViewChild(Nav) nav: Nav;
-
+  username:string = "";
+  userpick:string = "";
+  
   constructor(private afAuth: AngularFireAuth, platform: Platform,private toast: ToastController, statusBar: StatusBar, splashScreen: SplashScreen) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
@@ -22,9 +24,21 @@ export class MyApp {
       NavController;
       statusBar.styleDefault();
       splashScreen.hide();
+      let a = this.afAuth.authState.subscribe(data => {
+        if(data && data.email.length>0 && data.uid.length>0){
+          if(data.displayName!=null)
+            this.username = data.displayName;
+          else
+            this.username = data.email;
+          if(data.photoURL!=null)
+            this.userpick = data.photoURL;
+          else
+            this.userpick = "../assets/imgs/final.jpg";
+        }         
+      });
     });
   }
-  
+
   go_promo(){
     this.nav.setRoot(TabsHomePage);
   }
@@ -34,6 +48,8 @@ export class MyApp {
   }
 
   go_logout(){
+    this.userpick ="";
+    this.username ="";
     this.afAuth.auth.signOut();
     this.toast.create({
       message: "logout susses",

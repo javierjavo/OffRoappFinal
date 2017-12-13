@@ -32,11 +32,11 @@
   </div>
 
   <div id="gruposchat">
-    <ion-scroll class="itemGrup" *ngFor="let item of chats | async">
+    <ion-scroll class="itemGrup" *ngFor="let item of lichats async">
       <img class="imgGrupo" src={{item.url}} (click)="zoom(item)">   
       <div class="textos" (click)="go_chat(item)">
           <h2 class="name">{{item.name}}</h2>
-          <h6 class="hora">{{item.hora}}</h6>
+          <h6 class="hora">nel</h6>
           <hr class="divisor" color="gray" size=1 width="100%">
       </div>  
       <ion-icon class="chatOptions" ios="md-more" md="md-more"></ion-icon>
