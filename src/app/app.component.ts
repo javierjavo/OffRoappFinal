@@ -24,7 +24,7 @@ export class MyApp {
       NavController;
       statusBar.styleDefault();
       splashScreen.hide();
-      let a = this.afAuth.authState.subscribe(data => {
+      this.afAuth.authState.subscribe(data => {
         if(data && data.email.length>0 && data.uid.length>0){
           if(data.displayName!=null)
             this.username = data.displayName;
