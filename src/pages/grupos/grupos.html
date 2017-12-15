@@ -32,15 +32,29 @@
   </div>
 
   <div id="gruposchat">
-    <ion-scroll class="itemGrup" *ngFor="let item of lichats async">
-      <div class="advisor">{{item.msgs}}</div>
-      <img class="imgGrupo" src={{item.url}} (click)="zoom(item)">   
-      <div class="textos" (click)="go_chat(item)">
-          <h2 class="name">{{item.name}}</h2>
-          <h6 class="hora">nel</h6>
-          <hr class="divisor" color="gray" size=1 width="100%">
-      </div>  
-      <ion-icon class="chatOptions" ios="md-more" md="md-more"></ion-icon>
+    <ion-scroll class="itemGrup" >
+      <ion-list *ngFor="let litem of lichats async">
+        <ion-item-sliding>
+          <ion-item class="Gitem">
+            <div class="ad">{{litem.msgs}}</div>
+            <img class="imgGrupo" src={{litem.url}} (click)="zoom(litem)">   
+            <div class="textos" (click)="go_chat(litem)">
+                <h2 class="name">{{litem.name}}</h2>
+            </div>
+            <hr class="divisor" color="gray" size=2 width="100%">
+          </ion-item>
+          
+          <ion-item-options side="right">
+            <button ion-button color="secondary" (click)="Share(litem)">Share</button>
+            <button ion-button color="primary" (click)="Mute(litem)"> Mute </button>
+          </ion-item-options>
+      
+          <ion-item-options side="left">
+            <button ion-button color="danger" (click)="Delete(litem)"> let group </button>
+          </ion-item-options>
+
+        </ion-item-sliding>
+      </ion-list>
     </ion-scroll>
 
     <button class="btn" (click)="addChat()">

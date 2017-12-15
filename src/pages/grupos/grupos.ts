@@ -36,12 +36,14 @@ export class GruposPage {
 
   }
 
-  ionViewDidLoad(){ //obtengo los chats de cada persona pero los debe consultar de otra parte en consulta estatica
+  //inicializacion de componentes y demas elementos
+  ionViewDidLoad(){
     this.reloadChangesChat();
     /* MSGS
     hay que actualizar la db local aqui, guardando los codigos de chat y poniendo los eventos
     de escucha en el app component ya que ahí mantendra de manera glogal en control de si ya leyo o no
-    los mensajes entrantes*/
+    los mensajes entrantes
+    */
   }
 
   reloadChangesChat(){
@@ -92,6 +94,18 @@ export class GruposPage {
 
   addChat(){
     //aqui se registra el chat en tu lista de chats usando la semilla
+  }
+
+  Share(){
+    //alert respondiendo la semilla del chat y opciones para compartir
+  }
+
+  Mute(){
+    //alert preguntando por cuanto tiempo
+  }
+
+  Delete(){
+    //elimina de firestore en la referencia listachats/"USER_NAME"/"SEMILLA"
   }
 
   go_chat(item){
