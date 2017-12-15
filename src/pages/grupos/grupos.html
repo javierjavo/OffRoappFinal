@@ -33,6 +33,7 @@
 
   <div id="gruposchat">
     <ion-scroll class="itemGrup" *ngFor="let item of lichats async">
+      <div class="advisor">{{item.msgs}}</div>
       <img class="imgGrupo" src={{item.url}} (click)="zoom(item)">   
       <div class="textos" (click)="go_chat(item)">
           <h2 class="name">{{item.name}}</h2>
