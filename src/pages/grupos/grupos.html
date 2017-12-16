@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar color='primary'>
     <ion-buttons left>
       <button ion-button menuToggle>
         <ion-icon name="menu"></ion-icon>
@@ -36,7 +36,8 @@
       <ion-list *ngFor="let litem of lichats async">
         <ion-item-sliding>
           <ion-item class="Gitem">
-            <div class="ad">{{litem.msgs}}</div>
+            <div *ngIf='showmsg(litem)' class="ad">{{litem.msgs}}</div>
+            <br>
             <img class="imgGrupo" src={{litem.url}} (click)="zoom(litem)">   
             <div class="textos" (click)="go_chat(litem)">
                 <h2 class="name">{{litem.name}}</h2>

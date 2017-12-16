@@ -33,7 +33,7 @@ import { AngularFirestoreModule } from 'angularfire2/firestore';
     AngularFireAuthModule,
     AngularFireModule.initializeApp(FIREBASE_CONFIG),
     //AngularFireDatabaseModule
-    AngularFirestoreModule
+    AngularFirestoreModule.enablePersistence()
   ],
   bootstrap: [IonicApp],
   entryComponents: [
