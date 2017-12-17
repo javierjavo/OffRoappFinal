@@ -12,14 +12,14 @@
                     <h4>{{username}}</h4>
                     <ion-icon ios="md-create" md="md-create"></ion-icon>
                 </div>
-            </div>
+            </div> <br>
             <ion-item (click)="go_promo()" menuClose>
                 Eventos y Promociones
             </ion-item>
             <ion-item (click)="go_grup()" menuClose>
                 Mis Grupos
             </ion-item>
-             <ion-item (click)="go_logout()" menuClose>
+             <ion-item color="danger" class="logout" (click)="go_logout()" menuClose>
                 Logout
             </ion-item>
         </ion-list>

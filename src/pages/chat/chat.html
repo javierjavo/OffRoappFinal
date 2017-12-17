@@ -7,21 +7,21 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding class="fondo">
-  
+<ion-content padding>
   <div id="chatMessages">
-      <ul *ngFor="let item of post | async">
-        <li>
-          <strong>{{item.sender}}</strong>
-          <strong>{{item.message}}</strong>
-        </li>
-      </ul>
+      <ion-list *ngFor="let it of post">
+        <ion-item class="chat">
+          <h6>{{it.hora}}</h6>
+          <h4>{{it.sender}}</h4>
+          <h2>{{it.message}}</h2>
+        </ion-item>
+      </ion-list>
   </div>
 </ion-content>
 
 <ion-footer>
   <ion-toolbar>
-    <ion-input  type="text" [(ngModel)]="message"></ion-input>
-    <button ion-button icon-only><ion-icon name="send" ios="ios-send-outline" md="ios-send-outline"></ion-icon> </button>
+    <ion-input type="text" [(ngModel)]="message"></ion-input>
+    <button ion-button icon-only (click)="sendMessage()"><ion-icon name="send" ios="ios-send-outline" md="ios-send-outline"></ion-icon> </button>
   </ion-toolbar>
 </ion-footer>

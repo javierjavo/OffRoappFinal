@@ -74,7 +74,7 @@ export class GruposPage {
               semilla:li_item.payload.doc.data().semilla,
               url:li_item.payload.doc.data().url,
               name:li_item.payload.doc.data().name,
-              msgs: item.msgs,// MSGS aqui se recupera la lista de la db local de los mensajes leidos o no
+              msgs: -1,// MSGS aqui se recupera la lista de la db local de los mensajes leidos o no
               id: item.id
             }
             return auxli;
@@ -93,10 +93,10 @@ export class GruposPage {
           });
         });
         let messageadvisor:AngularFirestoreCollection<any> = this.db.collection('chats').doc(item.semilla).collection("messages");
-        messageadvisor.snapshotChanges(['added']).subscribe(messageadvisor=>{
+        messageadvisor.snapshotChanges().subscribe(s=>{
           if(this.commitsussess){
             //this.commitsussess = false;
-            return;
+            //return;
           }
           //let batch = this.db.firestore.batch();
           this.lichats.forEach(x=>{
