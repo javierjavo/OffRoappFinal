@@ -8,20 +8,45 @@
 </ion-header>
 
 <ion-content padding>
-  <div id="chatMessages">
+  <ion-grid id="chatMessages">
       <ion-list *ngFor="let it of post">
-        <ion-item class="chat">
-          <h6>{{it.hora}}</h6>
-          <h4>{{it.sender}}</h4>
-          <h2>{{it.message}}</h2>
-        </ion-item>
+
+        <div *ngIf='mine(it)'>
+          <div class="chatl">
+            <div class="contmessviewerL">
+              <ion-row class="metadatal">
+                <ion-col *ngIf='senderActive(it)'><h4><b>{{it.sender}}</b></h4></ion-col>
+              </ion-row>
+            
+              <div><h2 class="message">{{it.message}}</h2></div>
+              <div><h6 class="hora">{{it.hora}}</h6></div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf='!mine(it)'>
+          <div class="chatr">
+            <div class="contmessviewerR">
+              <ion-row class="metadatar">
+                <ion-col *ngIf='senderActive(it)'><h4><b>{{it.sender}}</b></h4></ion-col>
+              </ion-row>
+            
+              <div ><h2 class="message">{{it.message}}</h2></div>
+              <div ><h6 class="hora">{{it.hora}}</h6></div>
+            </div>
+          </div>
+        </div>
+      
       </ion-list>
-  </div>
+  </ion-grid>
 </ion-content>
 
 <ion-footer>
   <ion-toolbar>
-    <ion-input type="text" [(ngModel)]="message"></ion-input>
-    <button ion-button icon-only (click)="sendMessage()"><ion-icon name="send" ios="ios-send-outline" md="ios-send-outline"></ion-icon> </button>
+    <ion-row class="menssageContainer">
+      <ion-textarea class="messageSend" (change)='onChangeMessage()' col-9 type="text" [(ngModel)]="message"></ion-textarea>
+      <button col ion-button icon-only (click)="sendMessage()"><ion-icon name="send" ios="ios-send-outline" md="ios-send-outline"></ion-icon> </button>
+      <button col ion-button icon-only (click)="sendMedia()"><ion-icon name="sendimg" ios="ios-camera-outline" md="ios-camera-outline"></ion-icon> </button>
+    </ion-row>
   </ion-toolbar>
 </ion-footer>

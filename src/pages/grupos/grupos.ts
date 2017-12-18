@@ -31,7 +31,7 @@ export class GruposPage {
   codeschatcolection:AngularFirestoreCollection<Icodes>;
   codeschats:Icodes[];
   commitsussess:boolean = false;
-  
+  activatedGroup = "";
   lichatcolection:AngularFirestoreCollection<Ichats>;
   lichats:Ichats[]=[];
 
@@ -44,6 +44,11 @@ export class GruposPage {
     return (i.msgs>0);
   }
   //inicializacion de componentes y demas elementos
+
+  ionViewDidEnter(){
+    this.activatedGroup = "";
+  }
+
   ionViewDidLoad(){
     this.reloadChangesChat();
     /* MSGS
@@ -100,7 +105,7 @@ export class GruposPage {
           }
           //let batch = this.db.firestore.batch();
           this.lichats.forEach(x=>{
-            if(x.semilla == item.semilla){
+          if(x.semilla == item.semilla && item.semilla != this.activatedGroup){
               x.msgs = x.msgs+1;
               //let ref = this.db.doc('ListaChats/'+this.afAuth.auth.currentUser.email+"/codes/"+x.id).ref;
               //batch.update(ref,{msgs:x.msgs+1});  
@@ -169,6 +174,7 @@ export class GruposPage {
         //});
       }
     });
+    this.activatedGroup = item.semilla;
     this.navCtrl.push('ChatPage',{semilla:item.semilla,name:item.name});
   }
 

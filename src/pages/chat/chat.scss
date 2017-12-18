@@ -1,3 +1,78 @@
 page-chat {
+    .chatr{
+        position: relative;
+        width: 90%;
+        float: left;
+        .contmessviewerR{
+            position: relative;
+            background-color: rgb(122, 214, 122);
+            border-radius: 10px;
+            padding-bottom: 10px;
+    
+            .metadatar{
+                color:rgb(75, 75, 75);
+                border-radius: 10px;
+                text-align: center;
+            }
+    
+            .hora{
+                position: relative;
+                float: right;
+                right: 0;
+                font-size: 10px;
+                top:-10px;
+                right: 10px;
+            }
+        
+            .message{
+                position: relative;
+                color: snow;
+                border-radius: 20px;
+                font-size: 20px;
+            }
+        }
+    }
 
+    .chatl{
+        position: relative;
+        width: 90%;
+        float: right;
+        .contmessviewerL{
+            position: relative;
+            background-color:rgb(61, 139, 230);
+            border-radius: 10px;
+            padding-bottom: 10px;
+
+            .metadatal{
+                color:rgb(75, 75, 75);
+                text-align: center;
+            }
+
+            .hora{
+                position: relative;
+                float: right;
+                right: 0;
+                font-size: 10px;
+                top:-10px;
+                right: 10px;
+            }
+        
+            .message{
+                position: relative;
+                color: snow;
+                border-radius: 20px;
+                font-size: 20px;
+            }
+        }
+    }
+
+    //tabla de escritura de mensaje
+    .menssageContainer{
+        position: relative;
+        height: auto;
+        .messageSend{
+            position: relative;
+            height: 100%;
+        }
+    }
 }
