@@ -10,8 +10,11 @@ import { AngularFireAuth } from 'angularfire2/auth';
  */
 interface Post{
   sender:string;
+  dysplaysedner:string;
   message:string;
   hora:string;
+  id;
+  id_chat?;
 }
 @IonicPage()
 @Component({
@@ -24,7 +27,8 @@ export class ChatPage {
   message="";
   sender="";
   longmsg="5";
-  sActive="";
+  ActualS="";
+
   postCol: AngularFirestoreCollection<Post>;
   post: Post[]=[];
 
@@ -34,7 +38,6 @@ export class ChatPage {
         this.navCtrl.setRoot('LoginPage');
       if(navParams.get('semilla') == undefined)
         this.navCtrl.setRoot('TabsHomePage');
-      this.sActive = "";
       this.sender = this.user.auth.currentUser.email;
       this.message="";
       this.semilla = navParams.get('semilla');
@@ -44,13 +47,21 @@ export class ChatPage {
   ngOnInit(){  //a quí se manda el username para consultar los chat
     if(this.semilla){
       this.postCol = this.db.collection('chats').doc(this.semilla).collection("messages");
-      this.postCol.snapshotChanges().subscribe(mesages=>{
+      this.postCol.snapshotChanges(['added']).subscribe(mesages=>{
         let newmsgs = mesages.map(ms=>{
           let s = {
             sender : ms.payload.doc.data().sender,
             message : ms.payload.doc.data().message,
-            hora : ms.payload.doc.data().hora
+            hora : ms.payload.doc.data().hora,
+            dysplaysedner:ms.payload.doc.data().sender,
+            id:ms.payload.doc.id,
+            id_chat:ms.payload.doc.data().id_chat
           };
+          if(this.ActualS != s.dysplaysedner){
+            this.ActualS=s.dysplaysedner;
+          }else{
+            s.dysplaysedner = "";
+          }
           return s;
         });
         newmsgs.forEach(y=>{
@@ -60,8 +71,9 @@ export class ChatPage {
               exist=true;
             }
           });
-          if(!exist)
+          if(!exist){
             this.post.push(y);
+          }
         });
       });
     }
@@ -75,7 +87,7 @@ export class ChatPage {
       let d = new Date();
       let hora:string = d.getFullYear()+":"+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
       this.db.collection('chats').doc(this.semilla).collection("messages").add({ sender, message, hora}).then(item=>{
-        console.log(item.id);
+        this.message="";
       }).catch(e=>{ });
     }
   }
@@ -110,16 +122,37 @@ export class ChatPage {
     }
   }
 
-  senderActive(it){
-    if(it.sender != this.sActive){
-      this.sActive = it.sender;
-      return true;
-    }
-    return false;
-  }
-
   mine(it){
     return it.sender == this.sender;
+  }
+
+  requestAcept(it){
+    let user = it.message.split(", ")[0].substring(7);
+    console.log('ListaChats/'+user+'/codes/'+it.id_chat);
+
+    this.db.doc('ListaChats/'+user+'/codes/'+it.id_chat).update({ status:1 }).then(()=>{
+      this.db.doc('chats/'+this.semilla+"/messages/"+it.id).delete().then(()=>{
+        this.removeView(it);
+      });
+    });;
+  }
+
+  requestDecline(it){
+    let user = it.message.split(", ")[0].substring(7);
+    console.log('ListaChats/'+user+'/codes/'+it.id_chat);
+    this.db.doc('ListaChats/'+user+'/codes/'+it.id_chat).delete().then(()=>{
+      this.db.doc('chats/'+this.semilla+"/messages/"+it.id).delete().then(()=>{
+        this.removeView(it);
+      });
+    });;
+  }
+
+  removeView(it){
+    this.post.forEach(x=>{
+      if(x.message==it.message){
+        this.post.splice(this.post.indexOf(x),1);
+      }
+    });
   }
 
 }

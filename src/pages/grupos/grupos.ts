@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, IonicPage, AlertController } from 'ionic-angular';
-import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
+import { AngularFirestore, AngularFirestoreCollection} from 'angularfire2/firestore';
 import { AngularFireAuth } from 'angularfire2/auth';
 
 /*
@@ -9,8 +9,8 @@ import { AngularFireAuth } from 'angularfire2/auth';
 
 interface Icodes{
   semilla:string;
-  msgs:number;
   id:string;
+  status:number;
 }
 
 interface Ichats{
@@ -19,6 +19,7 @@ interface Ichats{
   name:string;
   msgs:number;
   id:string;
+  status:number;
 }
 
 @IonicPage()
@@ -65,8 +66,8 @@ export class GruposPage {
       this.codeschats = chatList.map(item=>{
         return {
           semilla:item.payload.doc.data().semilla,
-          msgs:item.payload.doc.data().msgs,
           id:item.payload.doc.ref.id,
+          status:item.payload.doc.data().status
         }
       });
       //console.log(this.codeschats );
@@ -80,7 +81,8 @@ export class GruposPage {
               url:li_item.payload.doc.data().url,
               name:li_item.payload.doc.data().name,
               msgs: -1,// MSGS aqui se recupera la lista de la db local de los mensajes leidos o no
-              id: item.id
+              id: item.id,
+              status:item.status
             }
             return auxli;
             //this.lichats.push(auxli);
@@ -116,7 +118,7 @@ export class GruposPage {
     });
   }
 
-  addChat(){
+  async addChat(){
     //aqui se registra el chat en tu lista de chats usando la semilla
     //step 0 crear id y verificar disponibilidad
     let val = Math.round(Math.random()*(99999 - 10000)+1);
@@ -132,10 +134,78 @@ export class GruposPage {
     for(let i=0;i<lpos.length ;i++){
       codigo+=lpos[i]+lval[i];
     }
+    //alerta de creacion
     this.alertc.create({
       title: codigo,
       subTitle: "Share your code",
-      buttons: ['Dismiss']
+      inputs: [
+        {
+          name: 'CCode',
+          placeholder: 'Chat Code'
+        }
+      ],
+      buttons: [
+      {
+        text: 'Cancel',
+        role: 'cancel',
+        handler: () => {
+          console.log('Cancel clicked');
+        }
+      },
+      {
+        text: 'Add',
+        handler: DataView => {
+          //validate info 
+          if(DataView.CCode.length > 0){
+            let semilla=DataView.CCode;
+            let exist = false;
+            this.codeschats.forEach(x=>{
+              if(x.semilla == semilla){
+                exist=true;
+              }
+            });
+            if(exist){
+              this.msg("ups! ya estas registrado en "+semilla,"ó ya mandaste la solicitud, en cuanto alguien te acepte podras entrar en el grupo");
+              return;
+            }
+              
+            let docRef = this.db.collection('ListaChats').doc("DomChats").collection(semilla);
+            docRef.snapshotChanges().subscribe(x=>{
+              if(x.length==0){
+                //no existe el elemento
+                this.msg("not found","El Chat no existe aun, intenta crearlo",this.addChat());
+              }else{
+                let status = 0;
+                
+                this.db.collection('ListaChats').doc(this.afAuth.auth.currentUser.email).collection("codes").add({ semilla, status }).then(item=>{
+                  let id_chat = item.id;
+                  let sender = "system";
+                  let message = "hi I'm "+this.afAuth.auth.currentUser.email+", I would like to be part of your group";
+                  let d = new Date();
+                  let hora:string = d.getFullYear()+":"+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
+                  this.db.collection('chats').doc(semilla).collection("messages").add({ sender, message, hora, id_chat}).then(item=>{
+                  }).catch(e=>{ });
+
+                }).catch(e=>{ });
+                /*
+                
+                */
+              }
+            });
+          }
+          else{
+            //intenta de nuevo
+            this.msg("Algo va mal","inteta llenar el campo semilla",this.addChat());
+          }
+        }
+      },
+      {
+        text: 'Create new chat',
+        handler: DataView => {
+          console.log('Buy clicked');
+        }
+      }
+    ]
     }).present();
 
     //step 1 añadir a la lista dom general
@@ -159,7 +229,7 @@ export class GruposPage {
   Delete(item){
     //elimina de firestore en la referencia listachats/"USER_NAME"/"SEMILLA"
     this.db.doc('ListaChats/'+this.afAuth.auth.currentUser.email+"/codes/"+item.id).delete().then(()=>{
-      console.log("todo okis");
+      
     });
   }
 
@@ -194,6 +264,23 @@ export class GruposPage {
     fondo.style.visibility = "hidden";
     image.src = "";
     name.innerText = "";
+  }
+
+  msg(t,mess,a?){
+    let alert;
+      alert = this.alertc.create({
+        title: t,
+        message: mess,
+        buttons: [
+          {
+            text: 'acept',
+            handler: () => {
+              return;
+            }
+          }
+        ]
+      });
+    alert.present(); 
   }
 
 }

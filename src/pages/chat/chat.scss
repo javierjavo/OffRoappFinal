@@ -1,78 +1,95 @@
 page-chat {
+
     .chatr{
         position: relative;
-        width: 90%;
+        width: 85%;
         float: left;
+        margin-bottom: 5px;
+        padding: 0;
+        background-color: rgba(122, 214, 122, 0.9);
+        border-radius: 10px;
         .contmessviewerR{
             position: relative;
-            background-color: rgb(122, 214, 122);
-            border-radius: 10px;
-            padding-bottom: 10px;
-    
+            top:1px;
             .metadatar{
                 color:rgb(75, 75, 75);
                 border-radius: 10px;
                 text-align: center;
-            }
-    
-            .hora{
-                position: relative;
-                float: right;
-                right: 0;
-                font-size: 10px;
-                top:-10px;
-                right: 10px;
-            }
-        
-            .message{
-                position: relative;
-                color: snow;
-                border-radius: 20px;
-                font-size: 20px;
             }
         }
     }
 
     .chatl{
         position: relative;
-        width: 90%;
+        width: 85%;
         float: right;
+        margin-bottom: 5px;
+        padding: 0;
+        background-color:rgba(61, 140, 230, 0.9);
+        border-radius: 10px;
         .contmessviewerL{
             position: relative;
-            background-color:rgb(61, 139, 230);
-            border-radius: 10px;
-            padding-bottom: 10px;
-
+            top:1px;
             .metadatal{
-                color:rgb(75, 75, 75);
+                color:rgb(65, 63, 63);
                 text-align: center;
-            }
-
-            .hora{
-                position: relative;
-                float: right;
-                right: 0;
-                font-size: 10px;
-                top:-10px;
-                right: 10px;
-            }
-        
-            .message{
-                position: relative;
-                color: snow;
-                border-radius: 20px;
-                font-size: 20px;
             }
         }
     }
 
+    .hora{
+        position: relative;
+        float: right;
+        right: 0;
+        color: snow;
+        font-size: 10px;
+        top:0px;
+        right: 10px;
+    }
+
+    .message{
+        position: relative;
+        color: rgb(11, 43, 40);
+        border-radius: 25px;
+        font-size: 15px;
+        left: 10px;
+        width: 95%;
+    }
+
     //tabla de escritura de mensaje
     .menssageContainer{
-        position: relative;
-        height: auto;
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        bottom: 10px;
+        left: 0;
+        background-color: rgb(126, 141, 161);
         .messageSend{
-            position: relative;
-            height: 100%;
+            position: absolute;
+            background-color: rgb(194, 219, 253);
+            border-radius: 10px;
+            width: 75%;
+            height: 35px;
+            bottom: 5px;
+            left: 10px;
         }
+        .send{
+            position: absolute; 
+            height: 30px;
+            width:30px;
+            bottom: 5px;
+            right: 40px;
+        }
+        .media{
+            position: absolute; 
+            height: 30px;
+            width:30px;
+            bottom: 5px;
+            right: 5px;
+        }
+    }
+
+    .chatbg{
+        background: linear-gradient( rgb(44, 85, 79),rgb(65, 63, 63),rgb(102, 114, 129));
     }
 }

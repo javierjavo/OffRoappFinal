@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar color="primary">
 
     <ion-title>
       <h1 class="title"> {{ name }}</h1>
@@ -7,46 +7,56 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  <ion-grid id="chatMessages">
-      <ion-list *ngFor="let it of post">
+<ion-content padding class="chatbg">
+      <div *ngFor="let it of post">
+        
+        <div *ngIf='it.sender=="system"'>
+          <div class="chatl">
+            <div class="contmessviewerL">
+              <div class="metadatal">
+                <h4><b>{{it.dysplaysedner}}</b></h4>
+              </div>
+              <div><h2 class="message">{{it.message}}</h2></div>
+              <button (click)="requestAcept(it)" class="requestAcepted" >Acept</button>
+              <button (click)="requestDecline(it)" class="requestDeclined">to Refuse</button>
+              <div><h6 class="hora">{{it.hora}}</h6></div>
+            </div>
+          </div>
+        </div>
 
         <div *ngIf='mine(it)'>
           <div class="chatl">
             <div class="contmessviewerL">
-              <ion-row class="metadatal">
-                <ion-col *ngIf='senderActive(it)'><h4><b>{{it.sender}}</b></h4></ion-col>
-              </ion-row>
-            
+              <div class="metadatal">
+                <h4><b>{{it.dysplaysedner}}</b></h4>
+              </div>
               <div><h2 class="message">{{it.message}}</h2></div>
               <div><h6 class="hora">{{it.hora}}</h6></div>
             </div>
           </div>
         </div>
 
-        <div *ngIf='!mine(it)'>
+        <div *ngIf='!mine(it)&&it.sender!="system"'>
           <div class="chatr">
             <div class="contmessviewerR">
-              <ion-row class="metadatar">
-                <ion-col *ngIf='senderActive(it)'><h4><b>{{it.sender}}</b></h4></ion-col>
-              </ion-row>
+              <div class="metadatar">
+                <h4><b>{{it.dysplaysedner}}</b></h4>
+              </div>
             
               <div ><h2 class="message">{{it.message}}</h2></div>
               <div ><h6 class="hora">{{it.hora}}</h6></div>
             </div>
           </div>
         </div>
-      
-      </ion-list>
-  </ion-grid>
+      </div>
 </ion-content>
 
 <ion-footer>
-  <ion-toolbar>
-    <ion-row class="menssageContainer">
-      <ion-textarea class="messageSend" (change)='onChangeMessage()' col-9 type="text" [(ngModel)]="message"></ion-textarea>
-      <button col ion-button icon-only (click)="sendMessage()"><ion-icon name="send" ios="ios-send-outline" md="ios-send-outline"></ion-icon> </button>
-      <button col ion-button icon-only (click)="sendMedia()"><ion-icon name="sendimg" ios="ios-camera-outline" md="ios-camera-outline"></ion-icon> </button>
-    </ion-row>
+  <ion-toolbar class="bgfooter">
+    <div class="menssageContainer">
+      <ion-textarea class="messageSend" (change)='onChangeMessage()' type="text" [(ngModel)]="message" placeholder="type here"></ion-textarea>
+      <button class="send" ion-button icon-only (click)="sendMessage()"><ion-icon name="send" ios="ios-send-outline" md="ios-send-outline"></ion-icon> </button>
+      <button class="media" ion-button icon-only (click)="sendMedia()"><ion-icon name="sendimg" ios="ios-camera-outline" md="ios-camera-outline"></ion-icon> </button>
+    </div>
   </ion-toolbar>
 </ion-footer>
