@@ -25,7 +25,7 @@ page-chat {
         float: right;
         margin-bottom: 5px;
         padding: 0;
-        background-color:rgba(61, 140, 230, 0.9);
+        background-color:rgb(80, 151, 228);
         border-radius: 10px;
         .contmessviewerL{
             position: relative;
@@ -56,36 +56,40 @@ page-chat {
         width: 95%;
     }
 
+    .bgfooter{
+        position: relative;
+        height: 80px;
+    }
     //tabla de escritura de mensaje
     .menssageContainer{
         position: absolute;
         height: 100%;
         width: 100%;
-        bottom: 10px;
+        bottom: 0px;
         left: 0;
         background-color: rgb(126, 141, 161);
         .messageSend{
             position: absolute;
             background-color: rgb(194, 219, 253);
             border-radius: 10px;
-            width: 75%;
-            height: 35px;
-            bottom: 5px;
+            width: 70%;
+            height: 60px;
+            bottom: 10px;
             left: 10px;
         }
         .send{
             position: absolute; 
-            height: 30px;
-            width:30px;
-            bottom: 5px;
-            right: 40px;
+            height: 55px;
+            width:45px;
+            bottom: 10px;
+            right: 47px;
         }
         .media{
             position: absolute; 
-            height: 30px;
-            width:30px;
-            bottom: 5px;
-            right: 5px;
+            height: 40px;
+            width:40px;
+            bottom: 10px;
+            right: 3px;
         }
     }
 

@@ -21,7 +21,7 @@ export class LoginPage {
     
   }
 
-  login(user: User) {
+  async login(user: User) {
       try {
         this.afAuth.auth.signInWithEmailAndPassword(user.email, user.password);
         let a = this.afAuth.authState.subscribe(data => {

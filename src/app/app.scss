@@ -15,34 +15,38 @@
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
 .fondo .scroll-content{
-    overflow: hidden;
+    overflow: scroll;
+}
+
+.menu{
+    position: relative;
+    top: -80px;
 }
 
 .logout{
-    position:absolute; 
-    bottom:0;
+    position: absolute; 
+    bottom: 0;
+    
     text-align: center;
 }
-
 .perfil{
     position: relative;
-    overflow: hidden;
     float: left;
     width: 100%;
     height: 100%;
+    
     img{
         position: relative;
         z-index: 0;
         width: 100%;
-        height: 100%;
+        height: 200px;
         z-index: 0;
     }
     div{
-        position: fixed;
+        position: relative;
         z-index: 0;
-        bottom: 61%;
+        top:-100px;
         width: 100%;
-        float:left;
         color: wheat;
         font-size: 20px;
         h4{

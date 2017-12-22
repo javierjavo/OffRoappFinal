@@ -47,7 +47,7 @@ export class ChatPage {
   ngOnInit(){  //a quí se manda el username para consultar los chat
     if(this.semilla){
       this.postCol = this.db.collection('chats').doc(this.semilla).collection("messages");
-      this.postCol.snapshotChanges(['added']).subscribe(mesages=>{
+      this.postCol.snapshotChanges(['added']).subscribe( (mesages)=>{
         let newmsgs = mesages.map(ms=>{
           let s = {
             sender : ms.payload.doc.data().sender,

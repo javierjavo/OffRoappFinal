@@ -5,23 +5,27 @@
         </ion-toolbar>
     </ion-header>        
     <ion-content>
-        <ion-list>
+        <ion-list class="scroll">
             <div class="perfil">
                 <img src={{userpick}} alt={{username}}>
                 <div>
                     <h4>{{username}}</h4>
                     <ion-icon ios="md-create" md="md-create"></ion-icon>
                 </div>
-            </div> <br>
-            <ion-item (click)="go_promo()" menuClose>
-                Eventos y Promociones
-            </ion-item>
-            <ion-item (click)="go_grup()" menuClose>
-                Mis Grupos
-            </ion-item>
-             <ion-item color="danger" class="logout" (click)="go_logout()" menuClose>
-                Logout
-            </ion-item>
+            </div>
+            <div class="menu">
+                <ion-item (click)="go_promo()" menuClose>
+                    Eventos y Promociones
+                </ion-item>
+                <ion-item (click)="go_grup()" menuClose>
+                    Mis Grupos
+                </ion-item>
+            </div>
+            <div class="fotter">
+                <ion-item color="danger" class="logout" (click)="go_logout()" menuClose>
+                    Logout
+                </ion-item>
+            </div>
         </ion-list>
     </ion-content>
 </ion-menu>
