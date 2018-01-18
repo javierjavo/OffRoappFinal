@@ -44,10 +44,10 @@
     }
     div{
         position: relative;
-        z-index: 0;
-        top:-100px;
+        z-index: s0;
+        top:-90px;
         width: 100%;
-        color: wheat;
+        color: rgb(175, 190, 206);
         font-size: 20px;
         h4{
             position: relative;
@@ -57,8 +57,9 @@
         }
         ion-icon{
             position: relative;
-            width: 20%;
-            font-size: 40px;
+            z-index: 10;
+            width: 10%;
+            font-size: 25px;
             float: right;
             text-align: center;
         }

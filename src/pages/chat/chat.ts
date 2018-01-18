@@ -13,6 +13,7 @@ interface Post{
   dysplaysedner:string;
   message:string;
   hora:string;
+  type:string;
   id;
   id_chat?;
 }
@@ -47,11 +48,12 @@ export class ChatPage {
   ngOnInit(){  //a quí se manda el username para consultar los chat
     if(this.semilla){
       this.postCol = this.db.collection('chats').doc(this.semilla).collection("messages");
-      this.postCol.snapshotChanges(['added']).subscribe( (mesages)=>{
+      this.postCol.snapshotChanges(['added', 'modified']).subscribe( (mesages)=>{
         let newmsgs = mesages.map(ms=>{
           let s = {
             sender : ms.payload.doc.data().sender,
             message : ms.payload.doc.data().message,
+            type: ms.payload.doc.data().type,
             hora : ms.payload.doc.data().hora,
             dysplaysedner:ms.payload.doc.data().sender,
             id:ms.payload.doc.id,
@@ -64,17 +66,23 @@ export class ChatPage {
           }
           return s;
         });
+      
         newmsgs.forEach(y=>{
           let exist = false;
           this.post.map(x=>{
             if(x.hora==y.hora){
               exist=true;
+              if(x.message != y.message){
+                x.message = y.message;
+                x.type = "msg";
+              }
             }
           });
           if(!exist){
             this.post.push(y);
           }
         });
+
       });
     }
   
@@ -86,7 +94,8 @@ export class ChatPage {
       let message = this.message;
       let d = new Date();
       let hora:string = d.getFullYear()+":"+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
-      this.db.collection('chats').doc(this.semilla).collection("messages").add({ sender, message, hora}).then(item=>{
+      let type = "msg";
+      this.db.collection('chats').doc(this.semilla).collection("messages").doc(hora).set({ sender, message, hora, type}).then(item=>{
         this.message="";
       }).catch(e=>{ });
     }
@@ -97,31 +106,6 @@ export class ChatPage {
     // en formato %ruta la cual se imprime en imagen
   }
 
-  onChangeMessage(){
-    let x = Math.round((this.message.length/30));
-    switch(x){
-      case 0:
-      case 1:
-        this.longmsg = "1";
-      break;
-      case 2:
-        this.longmsg = "2";
-      break;
-      case 3:
-        this.longmsg = "3";
-      break;
-      case 4:
-        this.longmsg = "4";
-      break;
-      case 5:
-        this.longmsg = "5";
-      break;
-      default:
-        this.longmsg = "5";
-      break;
-    }
-  }
-
   mine(it){
     return it.sender == this.sender;
   }
@@ -129,30 +113,23 @@ export class ChatPage {
   requestAcept(it){
     let user = it.message.split(", ")[0].substring(7);
     console.log('ListaChats/'+user+'/codes/'+it.id_chat);
-
     this.db.doc('ListaChats/'+user+'/codes/'+it.id_chat).update({ status:1 }).then(()=>{
-      this.db.doc('chats/'+this.semilla+"/messages/"+it.id).delete().then(()=>{
-        this.removeView(it);
-      });
-    });;
+      this.db.doc('chats/'+this.semilla+"/messages/"+it.id).update({
+        message:user+" aceptado por "+  this.sender,
+        type:"msg"
+      }).then(()=>{});
+    });
   }
 
   requestDecline(it){
     let user = it.message.split(", ")[0].substring(7);
     console.log('ListaChats/'+user+'/codes/'+it.id_chat);
     this.db.doc('ListaChats/'+user+'/codes/'+it.id_chat).delete().then(()=>{
-      this.db.doc('chats/'+this.semilla+"/messages/"+it.id).delete().then(()=>{
-        this.removeView(it);
-      });
+      this.db.doc('chats/'+this.semilla+"/messages/"+it.id).update({
+        message: user+" rechazado por "+  this.sender,
+        type:"msg"
+      }).then(()=>{});
     });;
-  }
-
-  removeView(it){
-    this.post.forEach(x=>{
-      if(x.message==it.message){
-        this.post.splice(this.post.indexOf(x),1);
-      }
-    });
   }
 
 }

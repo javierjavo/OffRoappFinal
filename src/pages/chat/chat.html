@@ -10,33 +10,33 @@
 <ion-content padding class="chatbg">
       <div *ngFor="let it of post">
         
-        <div *ngIf='it.sender=="system"'>
+        <div *ngIf='it.type=="buttons"'>
+          <div class="chatr">
+            <div class="contmessviewerR">
+              <div class="metadatar">
+                <h4><b>{{it.dysplaysedner}}</b></h4>
+              </div>
+              <div><h2 class="message">{{it.message}}</h2></div>
+              <button (click)="requestAcept(it)" class="requestAcepted btns" >Acept</button>
+              <button (click)="requestDecline(it)" class="requestDeclined btns">to Refuse</button>
+              <div><h6 class="hora">{{it.hora}}</h6></div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf='mine(it)&&it.type=="msg"'>
           <div class="chatl">
             <div class="contmessviewerL">
               <div class="metadatal">
                 <h4><b>{{it.dysplaysedner}}</b></h4>
               </div>
               <div><h2 class="message">{{it.message}}</h2></div>
-              <button (click)="requestAcept(it)" class="requestAcepted" >Acept</button>
-              <button (click)="requestDecline(it)" class="requestDeclined">to Refuse</button>
               <div><h6 class="hora">{{it.hora}}</h6></div>
             </div>
           </div>
         </div>
 
-        <div *ngIf='mine(it)'>
-          <div class="chatl">
-            <div class="contmessviewerL">
-              <div class="metadatal">
-                <h4><b>{{it.dysplaysedner}}</b></h4>
-              </div>
-              <div><h2 class="message">{{it.message}}</h2></div>
-              <div><h6 class="hora">{{it.hora}}</h6></div>
-            </div>
-          </div>
-        </div>
-
-        <div *ngIf='!mine(it)&&it.sender!="system"'>
+        <div *ngIf='!mine(it)&&it.type=="msg"'>
           <div class="chatr">
             <div class="contmessviewerR">
               <div class="metadatar">
@@ -54,7 +54,7 @@
 <ion-footer>
   <ion-toolbar class="bgfooter">
     <div class="menssageContainer">
-      <ion-textarea class="messageSend" (change)='onChangeMessage()' type="text" [(ngModel)]="message" placeholder="type here"></ion-textarea>
+      <ion-textarea class="messageSend" type="text" [(ngModel)]="message" placeholder="type here"></ion-textarea>
       <button class="send" ion-button icon-only (click)="sendMessage()"><ion-icon name="send" ios="ios-send-outline" md="ios-send-outline"></ion-icon> </button>
       <button class="media" ion-button icon-only (click)="sendMedia()"><ion-icon name="sendimg" ios="ios-camera-outline" md="ios-camera-outline"></ion-icon> </button>
     </div>

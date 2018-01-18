@@ -47,6 +47,11 @@ export class MyApp {
     this.nav.setRoot(GruposPage);  
   }
 
+  go_profile(){
+    //this.nav.push(ProfilePage);
+    alert("Editar Perfil");
+  }
+
   go_logout(){
     this.userpick ="";
     this.username ="";

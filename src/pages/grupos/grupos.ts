@@ -121,23 +121,11 @@ export class GruposPage {
   async addChat(){
     //aqui se registra el chat en tu lista de chats usando la semilla
     //step 0 crear id y verificar disponibilidad
-    let val = Math.round(Math.random()*(99999 - 10000)+1);
-    let lpos = val.toString().split("");
-    let name = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-+<>@$%&/()123456789".split("");
-    let lval:string[]=[];
-    lpos.forEach(x=>{
-      let p = parseInt(x);
-      lval.push(name[p]);
-    });
     
-    let codigo:string="";
-    for(let i=0;i<lpos.length ;i++){
-      codigo+=lpos[i]+lval[i];
-    }
     //alerta de creacion
     this.alertc.create({
-      title: codigo,
-      subTitle: "Share your code",
+      title: "Introduce el codigo",
+      subTitle: "si no tienes uno pidelo a tus amigos o intenta crear tu propio grupo",
       inputs: [
         {
           name: 'CCode',
@@ -183,13 +171,11 @@ export class GruposPage {
                   let message = "hi I'm "+this.afAuth.auth.currentUser.email+", I would like to be part of your group";
                   let d = new Date();
                   let hora:string = d.getFullYear()+":"+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
-                  this.db.collection('chats').doc(semilla).collection("messages").add({ sender, message, hora, id_chat}).then(item=>{
+                  let type = "buttons";
+                  this.db.collection('chats').doc(semilla).collection("messages").doc(hora).set({ sender, message, hora, type, id_chat}).then(item=>{
                   }).catch(e=>{ });
-
                 }).catch(e=>{ });
-                /*
                 
-                */
               }
             });
           }
@@ -202,7 +188,31 @@ export class GruposPage {
       {
         text: 'Create new chat',
         handler: DataView => {
-          console.log('Buy clicked');
+          do{
+            let val = Math.round(Math.random()*(99999 - 100)+1);
+            let lpos = val.toString().split("");
+            let name = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-+<>@$%&/()123456789".split("");
+            let lval:string[]=[];
+            lpos.forEach(x=>{
+              let p = parseInt(x);
+              lval.push(name[p]);
+            });
+            
+            var codigo:string="";
+            for(let i=0;i<lpos.length ;i++){
+              codigo+=lpos[i]+lval[i];
+            }
+      
+            var exist = false;
+            this.codeschats.forEach(x=>{
+              if(x.semilla == codigo){
+                exist=true;
+              }
+            });
+      
+          }while(exist);
+
+          //se usa codigo para crear el nuevo grupo como tu administrador
         }
       }
     ]
@@ -229,7 +239,6 @@ export class GruposPage {
   Delete(item){
     //elimina de firestore en la referencia listachats/"USER_NAME"/"SEMILLA"
     this.db.doc('ListaChats/'+this.afAuth.auth.currentUser.email+"/codes/"+item.id).delete().then(()=>{
-      
     });
   }
 

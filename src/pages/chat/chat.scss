@@ -96,4 +96,14 @@ page-chat {
     .chatbg{
         background: linear-gradient( rgb(44, 85, 79),rgb(65, 63, 63),rgb(102, 114, 129));
     }
+
+    .btns{
+        position: relative;
+        width: 40%;
+        height: 35px;
+        border-radius: 35px;
+        background-color: rgba(75, 75, 75, 0.5);
+        margin: auto;
+        left: 10%;
+    }
 }
