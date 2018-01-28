@@ -7,56 +7,59 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding class="chatbg">
-      <div *ngFor="let it of post">
-        
-        <div *ngIf='it.type=="buttons"'>
-          <div class="chatr">
-            <div class="contmessviewerR">
-              <div class="metadatar">
-                <h4><b>{{it.dysplaysedner}}</b></h4>
-              </div>
-              <div><h2 class="message">{{it.message}}</h2></div>
-              <button (click)="requestAcept(it)" class="requestAcepted btns" >Acept</button>
-              <button (click)="requestDecline(it)" class="requestDeclined btns">to Refuse</button>
-              <div><h6 class="hora">{{it.hora}}</h6></div>
-            </div>
-          </div>
+<ion-content  class="chatbg" >
+  <div *ngFor="let it of post" >
+    <div class="maincontainer" *ngIf='it.type=="buttons"'><br>
+      <div class="chatC">
+        <div class="contmessviewerC">
+          <div><h2 class="message">{{it.message}}</h2></div>
+          <button (click)="requestAcept(it)" class="requestAcepted btns" >Acept</button>
+          <button (click)="requestDecline(it)" class="requestDeclined btns">to Refuse</button>
+          <div><h6 class="hora">{{it.hora}}</h6></div>
         </div>
+      </div><br>
+    </div>
 
-        <div *ngIf='mine(it)&&it.type=="msg"'>
-          <div class="chatl">
-            <div class="contmessviewerL">
-              <div class="metadatal">
-                <h4><b>{{it.dysplaysedner}}</b></h4>
-              </div>
-              <div><h2 class="message">{{it.message}}</h2></div>
-              <div><h6 class="hora">{{it.hora}}</h6></div>
-            </div>
-          </div>
+    <div class="maincontainer" *ngIf='it.type=="sys"'><br>
+      <div class="chatCmin">
+        <div class="contmessviewerC">
+          <div><h2 class="message">{{it.message}}</h2></div>
+          <div><h6 class="hora">{{it.hora}}</h6></div>
         </div>
+      </div><br>
+    </div>
 
-        <div *ngIf='!mine(it)&&it.type=="msg"'>
-          <div class="chatr">
-            <div class="contmessviewerR">
-              <div class="metadatar">
-                <h4><b>{{it.dysplaysedner}}</b></h4>
-              </div>
-            
-              <div ><h2 class="message">{{it.message}}</h2></div>
-              <div ><h6 class="hora">{{it.hora}}</h6></div>
-            </div>
+    <div class="maincontainer" *ngIf='mine(it)&&it.type=="msg"'>
+      <div class="chatl">
+        <div class="contmessviewerl">
+          <div class="metadata">
+            <h4><b>{{it.displaysedner}}</b></h4>
           </div>
+          <div><h2 class="message">{{it.message}}</h2></div>
+          <div><h6 class="hora">{{it.hora}}</h6></div>
         </div>
       </div>
-</ion-content>
-
-<ion-footer>
-  <ion-toolbar class="bgfooter">
-    <div class="menssageContainer">
-      <ion-textarea class="messageSend" type="text" [(ngModel)]="message" placeholder="type here"></ion-textarea>
-      <button class="send" ion-button icon-only (click)="sendMessage()"><ion-icon name="send" ios="ios-send-outline" md="ios-send-outline"></ion-icon> </button>
-      <button class="media" ion-button icon-only (click)="sendMedia()"><ion-icon name="sendimg" ios="ios-camera-outline" md="ios-camera-outline"></ion-icon> </button>
     </div>
-  </ion-toolbar>
-</ion-footer>
+
+    <div class="maincontainer"  *ngIf='!mine(it)&&it.type=="msg"'>
+      <div class="chatr">
+        <div class="contmessviewerR">
+          <div class="metadata">
+            <h4><b>{{it.displaysedner}}</b></h4>
+          </div>
+          <div ><h2 class="message">{{it.message}}</h2></div>
+          <div ><h6 class="hora">{{it.hora}}</h6></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br><br><br><br><br>
+</ion-content>
+<div class="bgfooter">
+  <div class="menssageContainer">
+    <textarea class="messageSend" type="text" [(ngModel)]="message" placeholder="type here">
+    </textarea>
+    <ion-icon class="media" (click)="sendMedia()" name="sendimg" ios="md-attach" md="md-attach"></ion-icon>
+    <button class="send" ion-button icon-only (click)="sendMessage()"><ion-icon name="send" ios="ios-send-outline" md="ios-send-outline"></ion-icon> </button>
+  </div>
+</div>

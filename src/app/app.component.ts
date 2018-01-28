@@ -17,7 +17,8 @@ export class MyApp {
   username:string = "";
   userpick:string = "";
   
-  constructor(private afAuth: AngularFireAuth, platform: Platform,private toast: ToastController, statusBar: StatusBar, splashScreen: SplashScreen) {
+  constructor(private afAuth: AngularFireAuth, platform: Platform,private toast: ToastController,
+    statusBar: StatusBar, splashScreen: SplashScreen) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
@@ -34,9 +35,37 @@ export class MyApp {
             this.userpick = data.photoURL;
           else
             this.userpick = "../assets/imgs/final.jpg";
-        }         
+          
+          let sc = document.getElementById('menuUser') as HTMLElement;
+          let mp = document.getElementById('menuPrincipal') as HTMLElement;
+          sc.style.display="block";
+          mp.style.display="none";
+        }else{
+          let sc = document.getElementById('menuUser') as HTMLElement;
+          let mp = document.getElementById('menuPrincipal') as HTMLElement;
+          sc.style.display="none";
+          mp.style.display="block";
+        }     
       });
     });
+  }
+  
+  async flogin(mail,pass){
+    try {
+      this.afAuth.auth.signInWithEmailAndPassword(mail, pass);
+      this.afAuth.authState.subscribe(data => {
+        if(data && data.email.length>0 && data.uid.length>0){
+          this.toast.create({
+              message: 'Let\'s roll, '+data.email,
+              duration: 1000,
+          }).present();
+          this.nav.setRoot('TabsHomePage');
+        }
+        return;          
+      });
+    } catch (e) {
+      this.nav.push('RegisterPage');
+    }
   }
 
   go_promo(){

@@ -134,14 +134,14 @@ export class GruposPage {
       ],
       buttons: [
       {
-        text: 'Cancel',
+        text: 'Cancelar',
         role: 'cancel',
         handler: () => {
-          console.log('Cancel clicked');
+          
         }
       },
       {
-        text: 'Add',
+        text: 'Agregar grupo',
         handler: DataView => {
           //validate info 
           if(DataView.CCode.length > 0){
@@ -172,7 +172,7 @@ export class GruposPage {
                   let d = new Date();
                   let hora:string = d.getFullYear()+":"+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
                   let type = "buttons";
-                  this.db.collection('chats').doc(semilla).collection("messages").doc(hora).set({ sender, message, hora, type, id_chat}).then(item=>{
+                  this.db.collection('chats').doc(semilla).collection("messages").doc(hora+":"+d.getMilliseconds()+":sys").set({ sender, message, hora, type, id_chat}).then(item=>{
                   }).catch(e=>{ });
                 }).catch(e=>{ });
                 
@@ -186,10 +186,11 @@ export class GruposPage {
         }
       },
       {
-        text: 'Create new chat',
+        text: 'Grupo Nuevo',
         handler: DataView => {
+          var codigo:string="";
           do{
-            let val = Math.round(Math.random()*(99999 - 100)+1);
+            let val = Math.round(Math.random()*(999 - 10)+1);
             let lpos = val.toString().split("");
             let name = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-+<>@$%&/()123456789".split("");
             let lval:string[]=[];
@@ -198,11 +199,10 @@ export class GruposPage {
               lval.push(name[p]);
             });
             
-            var codigo:string="";
+            codigo="";
             for(let i=0;i<lpos.length ;i++){
               codigo+=lpos[i]+lval[i];
             }
-      
             var exist = false;
             this.codeschats.forEach(x=>{
               if(x.semilla == codigo){
@@ -211,13 +211,12 @@ export class GruposPage {
             });
       
           }while(exist);
-
+          this.navCtrl.push('CreateNewChatPage',{semilla:codigo});
           //se usa codigo para crear el nuevo grupo como tu administrador
         }
       }
     ]
     }).present();
-
     //step 1 añadir a la lista dom general
     //step 2 añadir a la lista de el usuario
     //step 3 crear el chat con el mensaje inicial
@@ -238,6 +237,14 @@ export class GruposPage {
 
   Delete(item){
     //elimina de firestore en la referencia listachats/"USER_NAME"/"SEMILLA"
+    let sender = "system";
+    let message = this.afAuth.auth.currentUser.email+" ha abandonado el grupo";
+    let d = new Date();
+    let hora:string = d.getFullYear()+":"+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
+    let type = "sys";
+    this.db.collection('chats').doc(item.semilla).collection("messages").doc(hora+":"+d.getMilliseconds()+":sys").set({ sender, message, hora, type}).then(item=>{
+    }).catch(e=>{ });
+    
     this.db.doc('ListaChats/'+this.afAuth.auth.currentUser.email+"/codes/"+item.id).delete().then(()=>{
     });
   }

@@ -1,3 +1,53 @@
 page-home {
+    .BanerArea{
+        position: relative;
+        overflow-y: scroll;
+        height: 100vh;
+        left: 1vw;
+    }
+    .ItemAnuncio{
+        position: relative;
+        background-color: rgba(0, 0, 0, 0);
+        margin: 0px;
+        padding: 5px;
+        height: 50vw;
+        animation-name: AparicionIz;
+        animation-duration: 1s;
+    }
+    .fondoItem{
+        position: relative;
+        height: 100%;
+        width: 100%;
+        background-color: rgba(0, 0, 0, 0.1);
+    }
+}
 
+
+@keyframes AparicionIz {
+    0%   {
+        position: absolute;
+        opacity: 0;
+        left: -100vw;
+        top:100vh;
+    }
+    50%  {
+        position: absolute;
+        opacity: 0;
+        left: -100vw;
+        top:100vh;
+        opacity: 0.5;
+    }
+    85%  {
+        position: absolute;
+        opacity: 0;
+        left: -100vw;
+        top:100vh;
+        opacity: 0.85;
+    }
+    100% {
+        position: relative;
+        left: 0;
+        top: 0;
+        opacity: 1;
+    }
 }

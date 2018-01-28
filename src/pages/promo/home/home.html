@@ -1,3 +1,15 @@
 <ion-content padding>
-  <h2>anuncios here</h2>
+  <ion-list class="BanerArea" id="scrollArea" on-scroll="isElementInViewPort(s)">
+    <ion-grid >
+      <ion-row >
+        <ion-col *ngFor="let item of listBanner" col-6 class="ItemAnuncio" style="overflow:hidden;" >
+          <div class="fondoItem" (click)="select(item)">
+              {{item.ejemplo}}
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid><br><br><br><br><br><br><br><br>
+    <div id="check-point"></div>   
+  </ion-list>
+ 
 </ion-content>

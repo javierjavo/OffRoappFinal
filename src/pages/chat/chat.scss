@@ -1,109 +1,165 @@
 page-chat {
+    .maincontainer {
+        position: relative;
+        width: 96%;
+        height: 100%;
+        left: 2%;
+        right: 2%;
+        margin-bottom: 1px;
+    }
+    .chatC{
+        position: relative;
+        width: 100%;
+        height: 120px;
+        background-color: 	rgb(247, 222, 193);
+        border-color: rgb(243, 178, 99);
+        border-width: 4px;
+        border-style: solid;
+        border-radius: 10px;
+        .contmessviewerC{
+            position: relative;
+            top:10px;
+            .message{
+                text-align: center;
+            }
+        }
+        .btns{
+            position: relative;
+            width: 40%;
+            height: 35px;
+            border-width: 2px;
+            border-style: solid;
+            border-radius: 35px;
+            margin: auto;
+            left: 10%;
+            font-size:20px;
+            font-weight:bold;
+            -webkit-text-fill-color: snow;
+            -webkit-text-stroke-color: rgb(77, 77, 77);
+            -webkit-text-stroke-width: .7px;  
+        }
+        .requestDeclined{
+            background-color: #f53d3d; 
+            border-color: #eb1717;   
+        }
+        .requestAcepted{
+            background-color: #32db64; 
+            border-color: #1dc750;  
+        }
+    }
+    .chatCmin{
+        position: relative;
+        width: 100%;
+        height: 80px;
+        background-color: 	rgb(247, 222, 193);
+        border-color: rgb(243, 178, 99);
+        border-width: 2px;
+        border-style: solid;
+        border-radius: 10px;
+        .contmessviewerC{
+            position: relative;
+            text-align: center;
+            .hora{
+                top:-25px;
+            }
+        }
+    }
 
     .chatr{
         position: relative;
         width: 85%;
-        float: left;
-        margin-bottom: 5px;
-        padding: 0;
-        background-color: rgba(122, 214, 122, 0.9);
+        left: 15%;
+        border-width: 2px;
+        border-style: solid;
         border-radius: 10px;
+        background-color: rgb(129, 241, 129);
+        border-color: rgb(84, 216, 84);
         .contmessviewerR{
             position: relative;
-            top:1px;
-            .metadatar{
-                color:rgb(75, 75, 75);
-                border-radius: 10px;
-                text-align: center;
-            }
         }
     }
 
     .chatl{
         position: relative;
         width: 85%;
-        float: right;
-        margin-bottom: 5px;
-        padding: 0;
-        background-color:rgb(80, 151, 228);
+        border-width: 2px;
+        border-style: solid;
         border-radius: 10px;
+        background-color:rgb(114, 227, 231);
+        border-color: rgb(68, 170, 173);
         .contmessviewerL{
             position: relative;
-            top:1px;
-            .metadatal{
-                color:rgb(65, 63, 63);
-                text-align: center;
-            }
         }
+    }
+
+    .metadata{
+        text-align: center;
     }
 
     .hora{
         position: relative;
         float: right;
-        right: 0;
-        color: snow;
-        font-size: 10px;
-        top:0px;
+        color: rgb(87, 87, 87);
+        font-size: 12px;
+        top:-30px;
         right: 10px;
     }
 
     .message{
         position: relative;
-        color: rgb(11, 43, 40);
+        color: rgb(0, 0, 0);
         border-radius: 25px;
         font-size: 15px;
         left: 10px;
         width: 95%;
-    }
-
-    .bgfooter{
-        position: relative;
-        height: 80px;
-    }
-    //tabla de escritura de mensaje
-    .menssageContainer{
-        position: absolute;
-        height: 100%;
-        width: 100%;
-        bottom: 0px;
-        left: 0;
-        background-color: rgb(126, 141, 161);
-        .messageSend{
-            position: absolute;
-            background-color: rgb(194, 219, 253);
-            border-radius: 10px;
-            width: 70%;
-            height: 60px;
-            bottom: 10px;
-            left: 10px;
-        }
-        .send{
-            position: absolute; 
-            height: 55px;
-            width:45px;
-            bottom: 10px;
-            right: 47px;
-        }
-        .media{
-            position: absolute; 
-            height: 40px;
-            width:40px;
-            bottom: 10px;
-            right: 3px;
-        }
+        z-index: 2;
     }
 
     .chatbg{
-        background: linear-gradient( rgb(44, 85, 79),rgb(65, 63, 63),rgb(102, 114, 129));
+        position: relative;
+        overflow-y: scroll;
+        background: linear-gradient( rgba(44, 85, 79, 0.5),rgba(65, 63, 63, 0.5),rgba(102, 114, 129, 0.5));
     }
 
-    .btns{
-        position: relative;
-        width: 40%;
-        height: 35px;
-        border-radius: 35px;
-        background-color: rgba(75, 75, 75, 0.5);
-        margin: auto;
-        left: 10%;
+    .bgfooter{
+        position: fixed;
+        bottom: 0px;
+        left: 0;
+        height: 60px;
+        width: 100vw;
+        background-color: rgba(102, 114, 129, 1);
+        z-index: 3;
+        
+        .messageSend{
+            position: absolute;
+            background-color: rgba(255, 255, 255, 1);
+            border-radius: 5px;
+            bottom: 14px;
+            width: 80vw;
+            height: auto;
+            left: 2vw;
+            z-index: 0;
+        }
+
+        .media{
+            position: absolute;
+            font-size: 35px;
+            right: 80px;
+            bottom: 14px;
+            z-index: 10;
+            -webkit-transform: rotate(40deg);
+            transform: rotate(40deg);
+            color: gray;
+        }
+
+        .send{
+            position: absolute;
+            border-radius:14vw;
+            height: 14vw;
+            width:14vw;
+            right: 0px;
+            font-size: 6vw;
+            bottom: 0px;
+        }
     }
 }

@@ -1,11 +1,7 @@
-<ion-menu side="left" [content]="content" class="fondo">
-    <ion-header >
-        <ion-toolbar color='primary'>
-            <ion-title >Menu</ion-title>
-        </ion-toolbar>
-    </ion-header>        
-    <ion-content>
-        <ion-list class="scroll">
+<ion-menu side="left" [content]="content">
+         
+    <ion-content  class="fondomenu">
+        <ion-list class="scroll" id="menuUser">
             <div class="perfil">
                 <img src={{userpick}} alt={{username}}>
                 <div>
@@ -27,6 +23,18 @@
                 </ion-item>
             </div>
         </ion-list>
+        <div class="scroll" id="menuPrincipal">
+            <div class="contenido">
+                <div class="cuenta" (click)="flogin('prueba@prueba.com','prueba12')" menuClose>
+                    <img src="../assets/imgs/pick.jpg" alt="porfile">
+                    <h4>prueba@prueba.com</h4>
+                </div>
+                <div class="cuenta" (click)="flogin('javierjavo@live.com.mx','@javier1')" menuClose>
+                    <img src="../assets/imgs/logo.png" alt="porfile">
+                    <h4>javierjavo@<br>live.com.mx</h4>
+                </div>
+            </div>
+        </div>
     </ion-content>
 </ion-menu>
 <ion-nav [root]="rootPage" #content swipeBackEnabled="false"></ion-nav>

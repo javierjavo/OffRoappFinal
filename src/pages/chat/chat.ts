@@ -10,7 +10,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
  */
 interface Post{
   sender:string;
-  dysplaysedner:string;
+  displaysedner:string;
   message:string;
   hora:string;
   type:string;
@@ -55,14 +55,14 @@ export class ChatPage {
             message : ms.payload.doc.data().message,
             type: ms.payload.doc.data().type,
             hora : ms.payload.doc.data().hora,
-            dysplaysedner:ms.payload.doc.data().sender,
+            displaysedner:ms.payload.doc.data().sender,
             id:ms.payload.doc.id,
             id_chat:ms.payload.doc.data().id_chat
           };
-          if(this.ActualS != s.dysplaysedner){
-            this.ActualS=s.dysplaysedner;
+          if(this.ActualS != s.displaysedner){
+            this.ActualS=s.displaysedner;
           }else{
-            s.dysplaysedner = "";
+            s.displaysedner = "";
           }
           return s;
         });
@@ -74,15 +74,18 @@ export class ChatPage {
               exist=true;
               if(x.message != y.message){
                 x.message = y.message;
-                x.type = "msg";
+                x.type = "sys";
               }
             }
           });
           if(!exist){
             this.post.push(y);
+            //let sc = document.getElementById('scrollArea') as HTMLElement;
+            //sc.scrollTop = sc.scrollHeight;
+            //sc.scrollTo(0,sc.scrollHeight);
+            //id="scrollArea"
           }
         });
-
       });
     }
   
@@ -92,11 +95,11 @@ export class ChatPage {
     if(this.message.length > 0){
       let sender = this.sender;
       let message = this.message;
+      this.message="";
       let d = new Date();
       let hora:string = d.getFullYear()+":"+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
       let type = "msg";
-      this.db.collection('chats').doc(this.semilla).collection("messages").doc(hora).set({ sender, message, hora, type}).then(item=>{
-        this.message="";
+      this.db.collection('chats').doc(this.semilla).collection("messages").doc(hora+":"+d.getMilliseconds()).set({ sender, message, hora, type}).then(item=>{
       }).catch(e=>{ });
     }
   }
@@ -112,22 +115,20 @@ export class ChatPage {
 
   requestAcept(it){
     let user = it.message.split(", ")[0].substring(7);
-    console.log('ListaChats/'+user+'/codes/'+it.id_chat);
     this.db.doc('ListaChats/'+user+'/codes/'+it.id_chat).update({ status:1 }).then(()=>{
       this.db.doc('chats/'+this.semilla+"/messages/"+it.id).update({
         message:user+" aceptado por "+  this.sender,
-        type:"msg"
+        type:"sys"
       }).then(()=>{});
     });
   }
 
   requestDecline(it){
     let user = it.message.split(", ")[0].substring(7);
-    console.log('ListaChats/'+user+'/codes/'+it.id_chat);
     this.db.doc('ListaChats/'+user+'/codes/'+it.id_chat).delete().then(()=>{
       this.db.doc('chats/'+this.semilla+"/messages/"+it.id).update({
         message: user+" rechazado por "+  this.sender,
-        type:"msg"
+        type:"sys"
       }).then(()=>{});
     });;
   }
