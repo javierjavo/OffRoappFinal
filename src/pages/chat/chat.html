@@ -6,9 +6,65 @@
     </ion-title>
   </ion-navbar>
 </ion-header>
+<!--
+<ion-list class="chatbg" id="scrollArea" >
+  <ion-grid >
+    <ion-row >
+      <ion-col *ngFor="let it of post" col-12 style="overflow:hidden;" >
+        
+          <div class="maincontainer" *ngIf='it.type=="buttons"'><br>
+            <div class="chatC">
+              <div class="contmessviewerC">
+                <div><h2 class="message">{{it.message}}</h2></div>
+                <button (click)="requestAcept(it)" class="requestAcepted btns" >Acept</button>
+                <button (click)="requestDecline(it)" class="requestDeclined btns">to Refuse</button>
+                <div><h6 class="hora">{{it.hora}}</h6></div>
+              </div>
+            </div><br>
+          </div>
+      
+          <div class="maincontainer" *ngIf='it.type=="sys"'><br>
+            <div class="chatCmin">
+              <div class="contmessviewerC">
+                <div><h2 class="message">{{it.message}}</h2></div>
+                <div><h6 class="hora">{{it.hora}}</h6></div>
+              </div>
+            </div><br>
+          </div>
+      
+          <div class="maincontainer" *ngIf='mine(it)&&it.type=="msg"'>
+            <div class="chatl">
+              <div class="contmessviewerl">
+                <div class="metadata">
+                  <h4><b>{{it.displaysedner}}</b></h4>
+                </div>
+                <div><h2 class="message">{{it.message}}</h2></div>
+                <div><h6 class="hora">{{it.hora}}</h6></div>
+              </div>
+            </div>
+          </div>
+      
+          <div class="maincontainer"  *ngIf='!mine(it)&&it.type=="msg"'>
+            <div class="chatr">
+              <div class="contmessviewerR">
+                <div class="metadata">
+                  <h4><b>{{it.displaysedner}}</b></h4>
+                </div>
+                <div ><h2 class="message">{{it.message}}</h2></div>
+                <div ><h6 class="hora">{{it.hora}}</h6></div>
+              </div>
+            </div>
+          </div>
 
+      </ion-col>
+    </ion-row>
+  </ion-grid><br>
+  <div id="check-point"></div>   
+</ion-list>
+-->
 <ion-content  class="chatbg" >
   <div *ngFor="let it of post" >
+   
     <div class="maincontainer" *ngIf='it.type=="buttons"'><br>
       <div class="chatC">
         <div class="contmessviewerC">
@@ -53,7 +109,6 @@
       </div>
     </div>
   </div>
-  <br><br><br><br><br>
 </ion-content>
 <div class="bgfooter">
   <div class="menssageContainer">

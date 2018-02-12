@@ -1,8 +1,15 @@
 page-home {
+    .bannerOptions{
+        position: relative;
+        height: 10vh;
+        width: 100%;
+        padding: 22%;
+        top: -5px;
+    }
     .BanerArea{
         position: relative;
         overflow-y: scroll;
-        height: 100vh;
+        height: 75vh;
         left: 1vw;
     }
     .ItemAnuncio{

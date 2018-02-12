@@ -1,9 +1,18 @@
-<ion-content>
-  <ion-list>
-    <ion-list-header></ion-list-header>
-    <ion-item>
-      <ion-icon name="ionic" item-start>eventos here</ion-icon>
-      <ion-icon name="ionic" item-start>eventos here</ion-icon>
-    </ion-item>
+<ion-content padding>
+  <ion-col class="bannerOptions">
+      <button ion-button color="dark">informar de evento</button>
+  </ion-col>
+  <ion-list class="BanerArea" id="scrollArea" on-scroll="isElementInViewPort(s)">
+    <ion-grid >
+      <ion-row >
+        <ion-col *ngFor="let item of listBanner" col-12 class="ItemAnuncio" style="overflow:hidden;" >
+          <div class="fondoItem" (click)="select(item)">
+              {{item.ejemplo}}
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <div id="check-point"></div>   
   </ion-list>
+ 
 </ion-content>

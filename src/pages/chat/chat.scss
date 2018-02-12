@@ -1,4 +1,5 @@
 page-chat {
+    
     .maincontainer {
         position: relative;
         width: 96%;
@@ -10,7 +11,7 @@ page-chat {
     .chatC{
         position: relative;
         width: 100%;
-        height: 120px;
+        height: 130px;
         background-color: 	rgb(247, 222, 193);
         border-color: rgb(243, 178, 99);
         border-width: 4px;
@@ -21,6 +22,7 @@ page-chat {
             top:10px;
             .message{
                 text-align: center;
+                top: -15px;
             }
         }
         .btns{
@@ -32,10 +34,11 @@ page-chat {
             border-radius: 35px;
             margin: auto;
             left: 10%;
+            top:-20px;
             font-size:20px;
             font-weight:bold;
-            -webkit-text-fill-color: snow;
-            -webkit-text-stroke-color: rgb(77, 77, 77);
+            -webkit-text-fill-color: white;
+            -webkit-text-stroke-color: rgba(0, 0, 0, 0.5);
             -webkit-text-stroke-width: .7px;  
         }
         .requestDeclined{
@@ -50,7 +53,7 @@ page-chat {
     .chatCmin{
         position: relative;
         width: 100%;
-        height: 80px;
+        height: 85px;
         background-color: 	rgb(247, 222, 193);
         border-color: rgb(243, 178, 99);
         border-width: 2px;
@@ -60,7 +63,7 @@ page-chat {
             position: relative;
             text-align: center;
             .hora{
-                top:-25px;
+                top:-15px;
             }
         }
     }
@@ -115,9 +118,15 @@ page-chat {
         z-index: 2;
     }
 
+    .header{
+        height: 10vh;
+    }
+
     .chatbg{
         position: relative;
         overflow-y: scroll;
+        height: 90vh;
+        top: 0vh;
         background: linear-gradient( rgba(44, 85, 79, 0.5),rgba(65, 63, 63, 0.5),rgba(102, 114, 129, 0.5));
     }
 
@@ -125,7 +134,7 @@ page-chat {
         position: fixed;
         bottom: 0px;
         left: 0;
-        height: 60px;
+        height: 10vh;
         width: 100vw;
         background-color: rgba(102, 114, 129, 1);
         z-index: 3;

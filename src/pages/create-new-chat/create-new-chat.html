@@ -9,19 +9,23 @@
 <ion-content >
   <ion-item>
     <ion-label floating for="Nombre">Nombre de grupo</ion-label>
-    <ion-input name="Nombre" type="text"></ion-input>>
+    <ion-input name="Nombre" [(ngModel)]="nombre" type="text"></ion-input>>
   </ion-item>
   <ion-item>
-    <ion-label>{{ semilla }}</ion-label>
+    <ion-label>codigo: {{ semilla }}</ion-label>
   </ion-item>
   <ion-item>
     <ion-label floating for="Codigo">introduce el codigo de arriba</ion-label>
-    <ion-input name="codigo" type="text"></ion-input>>
+    <ion-input name="codigo" [(ngModel)]="codigo" type="text"></ion-input>>
+  </ion-item>
+  <ion-item>
+    
+    <ion-input type="file" [id]="pic"></ion-input>
   </ion-item>
   <ion-item>
     <ion-label>he leído y Acepto los<br> terminos y condiciones</ion-label>
     <ion-checkbox [(ngModel)]="terminos" ></ion-checkbox>
   </ion-item>
-  <button ion-button full> Aceptar </button>
+  <button ion-button full (click)="validate()"> Aceptar </button>
   
 </ion-content>

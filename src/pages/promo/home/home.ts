@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
-import { ContactPage } from '../contact/contact';
 
 @Component({
   selector: 'page-home',
@@ -9,8 +8,7 @@ import { ContactPage } from '../contact/contact';
 export class HomePage {
   listBanner=[];
   limiteAnunciosCache = 1;
-
-  tab3Root = ContactPage;
+ 
   constructor(public navCtrl: NavController) {
     this.listBanner=[];
   }

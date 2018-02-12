@@ -170,7 +170,7 @@ export class GruposPage {
                   let sender = "system";
                   let message = "hi I'm "+this.afAuth.auth.currentUser.email+", I would like to be part of your group";
                   let d = new Date();
-                  let hora:string = d.getFullYear()+":"+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
+                  let hora:string = d.getFullYear()+":"+d.getMonth()+":"+d.getDay()+":"+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
                   let type = "buttons";
                   this.db.collection('chats').doc(semilla).collection("messages").doc(hora+":"+d.getMilliseconds()+":sys").set({ sender, message, hora, type, id_chat}).then(item=>{
                   }).catch(e=>{ });
@@ -240,7 +240,7 @@ export class GruposPage {
     let sender = "system";
     let message = this.afAuth.auth.currentUser.email+" ha abandonado el grupo";
     let d = new Date();
-    let hora:string = d.getFullYear()+":"+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
+    let hora:string = d.getFullYear()+":"+d.getMonth()+":"+d.getDay()+":"+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
     let type = "sys";
     this.db.collection('chats').doc(item.semilla).collection("messages").doc(hora+":"+d.getMilliseconds()+":sys").set({ sender, message, hora, type}).then(item=>{
     }).catch(e=>{ });

@@ -97,7 +97,7 @@ export class ChatPage {
       let message = this.message;
       this.message="";
       let d = new Date();
-      let hora:string = d.getFullYear()+":"+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
+      let hora:string = d.getFullYear()+":"+d.getMonth()+":"+d.getDay()+":"+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
       let type = "msg";
       this.db.collection('chats').doc(this.semilla).collection("messages").doc(hora+":"+d.getMilliseconds()).set({ sender, message, hora, type}).then(item=>{
       }).catch(e=>{ });
