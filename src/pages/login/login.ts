@@ -15,10 +15,10 @@ import { AngularFireAuth } from "angularfire2/auth";
   templateUrl: 'login.html',
 })
 export class LoginPage {
-  user = {} as User; 
+  user = {} as User;
+  remember;
   constructor(private afAuth: AngularFireAuth, public navCtrl: NavController,
-              private toast: ToastController, public navParams: NavParams) {
-
+    private toast: ToastController, public navParams: NavParams) {
   }
 
   ionViewDidEnter(){
@@ -36,7 +36,7 @@ export class LoginPage {
     sc.scrollTo(screen.width,0);
   }
 
-  async login(user: User) {
+  login(user: User) {
     try {
       this.afAuth.auth.signInWithEmailAndPassword(user.email, user.password);
       let a = this.afAuth.authState.subscribe(data => {
@@ -45,6 +45,9 @@ export class LoginPage {
               message: 'Let\'s roll, '+data.email,
               duration: 1000,
           }).present();
+          if(this.remember){
+            
+          }
           this.navCtrl.setRoot('TabsHomePage');
         }
         a.unsubscribe();

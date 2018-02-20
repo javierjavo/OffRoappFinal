@@ -27,6 +27,10 @@
         <ion-label floating class="txt_flotante">Password</ion-label>
         <ion-input type="password" [(ngModel)]="user.password"></ion-input>
       </ion-item>
+      <ion-item class="chbx-input">
+        <ion-label class="txt_flotante">Recordar esta cuenta</ion-label>
+        <ion-checkbox [(ngModel)]="remember"></ion-checkbox>
+      </ion-item>
       <button ion-button (click)="login(user)" class="btn-log">Login</button>
     </div>
   </div>

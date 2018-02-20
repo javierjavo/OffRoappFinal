@@ -23,8 +23,9 @@
                 </ion-item>
             </div>
         </ion-list>
+        
         <div class="scroll" id="menuPrincipal">
-            <div class="contenido">
+            <div class="contenido" *ngFor="let task of tasks; let i = index">
                 <div class="cuenta" (click)="flogin('prueba@prueba.com','prueba12')" menuClose>
                     <img src="../assets/imgs/pick.jpg" alt="porfile">
                     <h4>prueba@prueba.com</h4>

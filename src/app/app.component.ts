@@ -2,29 +2,32 @@ import { Component,ViewChild } from '@angular/core';
 import { Platform,Nav, ToastController} from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { RedicPage } from '../pages/redic/redic';
+//import { RedicPage } from '../pages/redic/redic';
 import { GruposPage } from '../pages/grupos/grupos';
 import { TabsHomePage } from '../pages/promo/tabshome/tabshome';
 import { NavController } from 'ionic-angular';
+import { SQLite } from '@ionic-native/sqlite';
+import { TasksServiceProvider } from '../providers/tasks-service/tasks-service';
 import { AngularFireAuth } from "angularfire2/auth";
 
 @Component({
   templateUrl: 'app.html'
 })
 export class MyApp {
-  rootPage:any = RedicPage;
+  rootPage:any = "LoginPage";
   @ViewChild(Nav) nav: Nav;
   username:string = "";
   userpick:string = "";
   
   constructor(private afAuth: AngularFireAuth, platform: Platform,private toast: ToastController,
-    statusBar: StatusBar, splashScreen: SplashScreen) {
+    statusBar: StatusBar, splashScreen: SplashScreen, public sqlite: SQLite, private tasksService:TasksServiceProvider) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       NavController;
       statusBar.styleDefault();
       splashScreen.hide();
+      this.createDatabase();
       this.afAuth.authState.subscribe(data => {
         if(data && data.email.length>0 && data.uid.length>0){
           if(data.displayName!=null)
@@ -47,6 +50,22 @@ export class MyApp {
           mp.style.display="block";
         }     
       });
+    });
+  }
+
+  private createDatabase(){
+    this.sqlite.create({
+      name: 'data.db',
+      location: 'default' // the location field is required
+    }).then((db) => {
+      this.tasksService.setDatabase(db);
+      return this.tasksService.createTable();
+    })
+    .then((db) => {
+      console.log(db);
+    })
+    .catch(error =>{
+      console.error(error);
     });
   }
   
@@ -91,4 +110,7 @@ export class MyApp {
     }).present();
     this.nav.setRoot('LoginPage');
   }
+
+  //sql
+  tasks: any[] = [];
 }
