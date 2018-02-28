@@ -16,6 +16,7 @@ import { AngularFireAuthModule } from "angularfire2/auth";
 import { FIREBASE_CONFIG } from './app.firebase.config';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { TasksServiceProvider } from '../providers/tasks-service/tasks-service';
+import { IonicStorageModule } from '@ionic/storage';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,11 @@ import { TasksServiceProvider } from '../providers/tasks-service/tasks-service';
     AngularFireAuthModule,
     AngularFireModule.initializeApp(FIREBASE_CONFIG),
     //AngularFireDatabaseModule
-    AngularFirestoreModule.enablePersistence()
+    AngularFirestoreModule.enablePersistence(),
+    IonicStorageModule.forRoot({
+      name: '__mydb',
+      driverOrder: ['sqlite', 'websql', 'localstorage']
+    }),
   ],
   bootstrap: [IonicApp],
   entryComponents: [

@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+//import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { SQLiteObject } from '@ionic-native/sqlite';
 /*
@@ -22,7 +22,12 @@ export class TasksServiceProvider {
       this.db = db;
     }
   }
-
+/*
+  create(task: any){
+    let sql = 'INSERT INTO tasks(title, completed) VALUES(?,?)';
+    return this.db.executeSql(sql, [task.title, task.completed]);
+  }
+*/
   createTable(){
     let sql = 'CREATE TABLE IF NOT EXISTS tasks(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, completed INTEGER)';
     return this.db.executeSql(sql, []);

@@ -2,12 +2,8 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
 import { User } from "../../models/user";
 import { AngularFireAuth } from "angularfire2/auth";
-/**
- * Generated class for the LoginPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+//import { TasksServiceProvider } from '../../providers/tasks-service/tasks-service';
+import { Storage } from '@ionic/storage';
 
 @IonicPage()
 @Component({
@@ -15,10 +11,18 @@ import { AngularFireAuth } from "angularfire2/auth";
   templateUrl: 'login.html',
 })
 export class LoginPage {
+
   user = {} as User;
+  userName = "";
+  userPass = "";
   remember;
+
   constructor(private afAuth: AngularFireAuth, public navCtrl: NavController,
-    private toast: ToastController, public navParams: NavParams) {
+    private toast: ToastController, public navParams: NavParams, public storage: Storage) {
+      /*this.storage.set('prueba', 10);
+      this.storage.get('prueba').then((data) => {
+        console.log(data);
+      })*/
   }
 
   ionViewDidEnter(){
@@ -30,8 +34,8 @@ export class LoginPage {
     var sc = document.getElementById('scrollArea') as HTMLElement;
     sc.scrollTo(0,0);
   }
+
   nStep(){
-    
     var sc = document.getElementById('scrollArea') as HTMLElement;
     sc.scrollTo(screen.width,0);
   }
@@ -46,7 +50,12 @@ export class LoginPage {
               duration: 1000,
           }).present();
           if(this.remember){
-            
+            this.userName = this.user.email;
+            this.userPass = this.user.password;
+            this.saveLoginInfo(this.userName, this.userPass);
+            this.readLoginInfo();
+          }else{
+            this.removeLoginInfo();
           }
           this.navCtrl.setRoot('TabsHomePage');
         }
@@ -56,6 +65,29 @@ export class LoginPage {
     } catch (e) {
       this.navCtrl.push('RegisterPage');
     }
+  }
+
+  saveLoginInfo(userName, userPass){
+    this.storage.set('user', userName);
+    this.storage.set('password', userPass);
+  }
+
+  readLoginInfo(){
+    this.storage.get('user').then((data) => {
+      if(data){
+        console.log('Cuenta logeada:',data);
+      }
+    })/*
+    this.storage.get('password').then((data) => {
+      if(data){
+        console.log('Password:',data);
+      }
+    })*/
+  }
+
+  removeLoginInfo(){
+    this.storage.remove('user');
+    this.storage.remove('password');
   }
 
   register() {

@@ -6,9 +6,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { GruposPage } from '../pages/grupos/grupos';
 import { TabsHomePage } from '../pages/promo/tabshome/tabshome';
 import { NavController } from 'ionic-angular';
-import { SQLite } from '@ionic-native/sqlite';
-import { TasksServiceProvider } from '../providers/tasks-service/tasks-service';
 import { AngularFireAuth } from "angularfire2/auth";
+import { Storage } from '@ionic/storage';
 
 @Component({
   templateUrl: 'app.html'
@@ -18,16 +17,18 @@ export class MyApp {
   @ViewChild(Nav) nav: Nav;
   username:string = "";
   userpick:string = "";
+  FLogList: any=[];
   
   constructor(private afAuth: AngularFireAuth, platform: Platform,private toast: ToastController,
-    statusBar: StatusBar, splashScreen: SplashScreen, public sqlite: SQLite, private tasksService:TasksServiceProvider) {
+    statusBar: StatusBar, splashScreen: SplashScreen, public storage: Storage) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       NavController;
       statusBar.styleDefault();
       splashScreen.hide();
-      this.createDatabase();
+      this.readLoginInfo();
+
       this.afAuth.authState.subscribe(data => {
         if(data && data.email.length>0 && data.uid.length>0){
           if(data.displayName!=null)
@@ -53,20 +54,24 @@ export class MyApp {
     });
   }
 
-  private createDatabase(){
-    this.sqlite.create({
-      name: 'data.db',
-      location: 'default' // the location field is required
-    }).then((db) => {
-      this.tasksService.setDatabase(db);
-      return this.tasksService.createTable();
+  readLoginInfo(){
+    let a = {
+      user: "",
+      pass: ""
+    };
+    this.storage.get('user').then((data) => {
+      if(data){
+        console.log('Cuenta logeada:',data);
+        a.user=data;
+      }
     })
-    .then((db) => {
-      console.log(db);
+    this.storage.get('password').then((data) => {
+      if(data){
+        console.log('Password:',data);
+        a.pass = data;
+      }
     })
-    .catch(error =>{
-      console.error(error);
-    });
+    this.FLogList.push(a);
   }
   
   async flogin(mail,pass){
@@ -111,6 +116,9 @@ export class MyApp {
     this.nav.setRoot('LoginPage');
   }
 
+  revmove(item){
+    alert("holi");
+  }
   //sql
-  tasks: any[] = [];
+  //tasks: any[] = [];
 }
