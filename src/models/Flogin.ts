@@ -1,3 +1,6 @@
 export interface Flogin {
-    log: any[];
+    data:[{
+        user:string,
+        pass:string
+    }];
 }

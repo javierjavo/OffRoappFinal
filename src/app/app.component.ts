@@ -8,6 +8,7 @@ import { TabsHomePage } from '../pages/promo/tabshome/tabshome';
 import { NavController } from 'ionic-angular';
 import { AngularFireAuth } from "angularfire2/auth";
 import { Storage } from '@ionic/storage';
+import { Flogin } from '../models/Flogin';
 
 @Component({
   templateUrl: 'app.html'
@@ -17,7 +18,7 @@ export class MyApp {
   @ViewChild(Nav) nav: Nav;
   username:string = "";
   userpick:string = "";
-  FLogList: any=[];
+  FLogList = {} as Flogin;
   
   constructor(private afAuth: AngularFireAuth, platform: Platform,private toast: ToastController,
     statusBar: StatusBar, splashScreen: SplashScreen, public storage: Storage) {
@@ -28,7 +29,6 @@ export class MyApp {
       statusBar.styleDefault();
       splashScreen.hide();
       this.readLoginInfo();
-
       this.afAuth.authState.subscribe(data => {
         if(data && data.email.length>0 && data.uid.length>0){
           if(data.displayName!=null)
@@ -55,23 +55,11 @@ export class MyApp {
   }
 
   readLoginInfo(){
-    let a = {
-      user: "",
-      pass: ""
-    };
-    this.storage.get('user').then((data) => {
+    this.storage.get('cuentas').then((data) => {
       if(data){
-        console.log('Cuenta logeada:',data);
-        a.user=data;
+        this.FLogList.data = data;
       }
-    })
-    this.storage.get('password').then((data) => {
-      if(data){
-        console.log('Password:',data);
-        a.pass = data;
-      }
-    })
-    this.FLogList.push(a);
+    });
   }
   
   async flogin(mail,pass){
@@ -116,8 +104,20 @@ export class MyApp {
     this.nav.setRoot('LoginPage');
   }
 
-  revmove(item){
-    alert("holi");
+  revmove(a){
+    var accou:any=[];
+    var newacu:any=[];
+    this.storage.get('cuentas').then((data) => {
+      if(data){
+        accou = data;
+      }
+      accou.map((item)=>{
+        if(item.user!=a.user)
+          newacu.push(item);
+      });
+      this.FLogList.data = newacu;
+      this.storage.set('cuentas', newacu);
+    })
   }
   //sql
   //tasks: any[] = [];

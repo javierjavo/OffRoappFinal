@@ -25,13 +25,13 @@
         </ion-list>
         
         <div class="scroll" id="menuPrincipal">
-            <div class="contenido" *ngFor="let t of FLogList">
+            <div class="contenido" *ngFor="let t of FLogList.data">
                 <div  *ngIf='t.user'>
-                    <ion-item class="cuenta" (click)='flogin(t.user,t.pass)' menuClose>
+                    <div class="cuenta" (click)='flogin(t.user,t.pass)' menuClose>
                         <img src="../assets/imgs/pick.jpg" alt="porfile">
                         <h4>{{ t.user }}</h4>
-                    </ion-item>
-                    <button ion-button color="danger" (click)='revmove(t)'> borrar {{ t.user }} </button>
+                    </div>
+                    <button ion-button color="danger" (click)='revmove(t)'> Borrar cuenta </button>
                 </div>
             </div>
         </div>

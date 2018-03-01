@@ -4,6 +4,7 @@ import { User } from "../../models/user";
 import { AngularFireAuth } from "angularfire2/auth";
 //import { TasksServiceProvider } from '../../providers/tasks-service/tasks-service';
 import { Storage } from '@ionic/storage';
+import { Flogin } from '../../models/Flogin';
 
 @IonicPage()
 @Component({
@@ -11,7 +12,7 @@ import { Storage } from '@ionic/storage';
   templateUrl: 'login.html',
 })
 export class LoginPage {
-
+  FLogList = {} as Flogin;
   user = {} as User;
   userName = "";
   userPass = "";
@@ -19,6 +20,7 @@ export class LoginPage {
 
   constructor(private afAuth: AngularFireAuth, public navCtrl: NavController,
     private toast: ToastController, public navParams: NavParams, public storage: Storage) {
+      //storage.clear();
       /*this.storage.set('prueba', 10);
       this.storage.get('prueba').then((data) => {
         console.log(data);
@@ -53,7 +55,6 @@ export class LoginPage {
             this.userName = this.user.email;
             this.userPass = this.user.password;
             this.saveLoginInfo(this.userName, this.userPass);
-            this.readLoginInfo();
           }else{
             this.removeLoginInfo();
           }
@@ -67,22 +68,28 @@ export class LoginPage {
     }
   }
 
-  saveLoginInfo(userName, userPass){
-    this.storage.set('user', userName);
-    this.storage.set('password', userPass);
-  }
 
-  readLoginInfo(){
-    this.storage.get('user').then((data) => {
+  saveLoginInfo(userName, userPass){
+    var a = {
+      user: userName,
+      pass: userPass
+    }
+    var accou:any=[];
+    this.storage.get('cuentas').then((data) => {
       if(data){
-        console.log('Cuenta logeada:',data);
+        accou = data;
       }
-    })/*
-    this.storage.get('password').then((data) => {
-      if(data){
-        console.log('Password:',data);
+      let bol = true;
+      accou.map((item)=>{
+        if(item.user==a.user)
+          bol = false;
+      });
+      if(bol){
+        accou.push(a);
+        this.storage.set('cuentas', accou);
+        window.location.reload();
       }
-    })*/
+    })
   }
 
   removeLoginInfo(){
