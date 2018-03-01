@@ -65,7 +65,7 @@ export class MyApp {
   async flogin(mail,pass){
     try {
       this.afAuth.auth.signInWithEmailAndPassword(mail, pass);
-      this.afAuth.authState.subscribe(data => {
+      let a = this.afAuth.authState.subscribe(data => {
         if(data && data.email.length>0 && data.uid.length>0){
           this.toast.create({
               message: 'Let\'s roll, '+data.email,
@@ -101,6 +101,8 @@ export class MyApp {
       message: "logout susses",
       duration: 1000,
     }).present();
+    this.storage.remove("sesion");
+    this.readLoginInfo();
     this.nav.setRoot('LoginPage');
   }
 

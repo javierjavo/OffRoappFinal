@@ -5,7 +5,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 
 /*
   MSGS: detalles con la mensajeria en db local
-*/ 
+*/
 
 interface Icodes{
   semilla:string;

@@ -28,8 +28,13 @@ export class LoginPage {
   }
 
   ionViewDidEnter(){
-    if(this.afAuth.auth.currentUser != null)
-      this.navCtrl.setRoot('TabsHomePage');
+    this.storage.get("sesion").then(data=>{
+      if(data)
+        this.navCtrl.setRoot('TabsHomePage');
+    });
+    //console.log(this.afAuth.authState);
+    //if(this.afAuth.auth.currentUser.email!=null)
+    //  this.navCtrl.setRoot('TabsHomePage');
   }
 
   goback(){
@@ -42,24 +47,25 @@ export class LoginPage {
     sc.scrollTo(screen.width,0);
   }
 
-  login(user: User) {
+  async login(user: User) {
     try {
       this.afAuth.auth.signInWithEmailAndPassword(user.email, user.password);
       let a = this.afAuth.authState.subscribe(data => {
-        if(data && data.email.length>0 && data.uid.length>0){
+        
           this.toast.create({
-              message: 'Let\'s roll, '+data.email,
+              message: 'Let\'s roll, '+user.email,
               duration: 1000,
           }).present();
           if(this.remember){
             this.userName = this.user.email;
             this.userPass = this.user.password;
             this.saveLoginInfo(this.userName, this.userPass);
+            this.storage.set("sesion",true);
+            //  window.location.reload();
           }else{
             this.removeLoginInfo();
           }
           this.navCtrl.setRoot('TabsHomePage');
-        }
         a.unsubscribe();
         return;          
       });
@@ -87,7 +93,6 @@ export class LoginPage {
       if(bol){
         accou.push(a);
         this.storage.set('cuentas', accou);
-        window.location.reload();
       }
     })
   }
