@@ -65,12 +65,13 @@ export class MyApp {
   async flogin(mail,pass){
     try {
       this.afAuth.auth.signInWithEmailAndPassword(mail, pass);
-      let a = this.afAuth.authState.subscribe(data => {
+      this.afAuth.authState.subscribe(data => {
         if(data && data.email.length>0 && data.uid.length>0){
           this.toast.create({
               message: 'Let\'s roll, '+data.email,
               duration: 1000,
           }).present();
+          this.storage.set("sesion",'TabsHomePage');
           this.nav.setRoot('TabsHomePage');
         }
         return;          

@@ -1,13 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-
-/**
- * Generated class for the CreateNewChatPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-
+import { AngularFirestore } from 'angularfire2/firestore';
+import { AngularFireAuth } from 'angularfire2/auth';
+//AngularFirestoreCollection
 @IonicPage()
 @Component({
   selector: 'page-create-new-chat',
@@ -16,26 +11,43 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 export class CreateNewChatPage {
   private semilla:string;
   public terminos:boolean;
-  public pic: any;
+  public pic: string;
   public nombre:string;
   public codigo:string;
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, private db: AngularFirestore, public navParams: NavParams,private afAuth: AngularFireAuth) {
     this.semilla = navParams.get('semilla');
-    this.codigo="";
+    this.codigo=navParams.get('semilla');
     this.nombre="";
+    this.pic="";
   }
 
   ionViewDidLoad() {
 
   }
+  
   validate(){
     if(this.semilla == this.codigo && this.terminos && this.nombre.length>0){
-      
-      alert("validando");
+      this.crearGrupo(this.nombre,this.codigo);
+      this.navCtrl.pop();
     }else{
-      
-      alert("nel");
+      alert("por favor rellene todos los campos para continuar");
     }
     
   }
+
+  crearGrupo(name,semilla){
+    //
+    let url = this.pic;
+    let administrador = this.afAuth.auth.currentUser.email;
+    let usuarios:Array<string> = [];
+    usuarios.push(administrador);
+    this.db.collection('ListaChats').doc("DomChats").collection(this.codigo).add({ administrador, name, semilla, url, usuarios}).then(item=>{
+      this.db.collection('ListaChats').doc(this.afAuth.auth.currentUser.email).collection("codes")
+      .add({ semilla, statis:1 }).then(data=>{
+        alert("listo");
+      }).catch(error=>{  });
+    }).catch(e=>{ });
+  }
+  
+
 }

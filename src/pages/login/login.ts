@@ -27,10 +27,10 @@ export class LoginPage {
       })*/
   }
 
-  ionViewDidEnter(){
+  ionViewWillEnter(){
     this.storage.get("sesion").then(data=>{
       if(data)
-        this.navCtrl.setRoot('TabsHomePage');
+        this.navCtrl.setRoot(data);
     });
     //console.log(this.afAuth.authState);
     //if(this.afAuth.auth.currentUser.email!=null)
@@ -60,7 +60,7 @@ export class LoginPage {
             this.userName = this.user.email;
             this.userPass = this.user.password;
             this.saveLoginInfo(this.userName, this.userPass);
-            this.storage.set("sesion",true);
+            this.storage.set("sesion",'TabsHomePage');
             //  window.location.reload();
           }else{
             this.removeLoginInfo();
