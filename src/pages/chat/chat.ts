@@ -35,21 +35,43 @@ export class ChatPage {
 
   constructor(public user:AngularFireAuth,private db: AngularFirestore, 
     public navCtrl: NavController, public navParams: NavParams) {
-      if(this.user.auth.currentUser==null)
-        this.navCtrl.setRoot('LoginPage');
-      if(navParams.get('semilla') == undefined)
+      if(this.user.auth.currentUser==null){
         this.navCtrl.setRoot('TabsHomePage');
+        return;
+      }
+      if(navParams.get('semilla') == undefined){
+        this.navCtrl.setRoot('TabsHomePage');
+        return;
+      }      
       this.sender = this.user.auth.currentUser.email;
       this.message="";
       this.semilla = navParams.get('semilla');
       this.name = navParams.get('name');
+      
   }
   
   ngOnInit(){  //a quí se manda el username para consultar los chat
     if(this.semilla){
       this.postCol = this.db.collection('chats').doc(this.semilla).collection("messages");
       this.postCol.snapshotChanges(['added', 'modified']).subscribe( (mesages)=>{
-        let newmsgs = mesages.map(ms=>{
+        let newmsgs:any = mesages.map(ms=>{
+          let leido = true;
+          let user = ms.payload.doc.data().usuarios;
+          user.forEach(x=>{
+            if(x == this.sender && ms.payload.doc.data().sender == "sys"){
+              leido = false;
+            }
+          });
+          //si todas las personas en la lista ya leyeron el mensaje se borra de la nuve
+          if(user.length==0){
+            //elimino el mensaje
+            this.db.collection('chats').doc(this.semilla).collection("messages").doc(ms.payload.doc.id).delete().then(()=>{
+            });
+          }
+            //si ya leeí el mensaje ya no lo vuelvo a guardar
+          if(leido){
+            return 0;
+          }
           let s = {
             sender : ms.payload.doc.data().sender,
             message : ms.payload.doc.data().message,
@@ -64,28 +86,53 @@ export class ChatPage {
           }else{
             s.displaysedner = "";
           }
-          return s;
-        });
-      
-        newmsgs.forEach(y=>{
-          let exist = false;
-          this.post.map(x=>{
-            if(x.hora==y.hora){
-              exist=true;
-              if(x.message != y.message){
-                x.message = y.message;
-                x.type = "sys";
-              }
+          
+          //actualiza la lista de personas que leyeron el mensaje
+          let us=[];
+          user.forEach(x=>{
+            if(x!=this.sender){
+              us.push(x);
             }
           });
-          if(!exist){
-            this.post.push(y);
-            //let sc = document.getElementById('scrollArea') as HTMLElement;
-            //sc.scrollTop = sc.scrollHeight;
-            //sc.scrollTo(0,sc.scrollHeight);
-            //id="scrollArea"
-          }
+          let batch = this.db.firestore.batch();
+          let ref = this.db.collection('chats').doc(this.semilla).collection("messages").doc(s.id).ref;
+          batch.update(ref,{
+            usuarios:us
+          });
+          batch.commit().then(()=>{ }).catch(e=>{ 
+            console.log(e);
+          });
+          //aqui debe guardarse una copia local de los mensajes y listo
+          /*
+          db = this.storage.get(this.semilla);
+          //hay que ver si ya existe si ya existe hay que editarlo no solo guardarlo de nuevo
+          db.push(s);
+          this.storage.set(this.semilla,db);
+          return db;
+          */
+          return s;
         });
+        if(newmsgs != 0){
+          newmsgs.forEach(y=>{
+            let exist = false;
+            this.post.map(x=>{
+              if(x.hora==y.hora){
+                exist=true;
+                if(x.message != y.message){
+                  x.message = y.message;
+                  x.type = "sys";
+                }
+              }
+            });
+            if(!exist){
+              this.post.push(y);
+              //let sc = document.getElementById('scrollArea') as HTMLElement;
+              //sc.scrollTop = sc.scrollHeight;
+              //sc.scrollTo(0,sc.scrollHeight);
+              //id="scrollArea"
+            }
+          });
+        }
       });
     }
   
@@ -99,8 +146,14 @@ export class ChatPage {
       let d = new Date();
       let hora:string = d.getFullYear()+":"+d.getMonth()+":"+d.getDay()+":"+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
       let type = "msg";
-      this.db.collection('chats').doc(this.semilla).collection("messages").doc(hora+":"+d.getMilliseconds()).set({ sender, message, hora, type}).then(item=>{
-      }).catch(e=>{ });
+      let conect = this.db.collection('ListaChats').doc("DomChats").collection(this.semilla).snapshotChanges().subscribe(x=>{
+        x.map(i=>{
+          let usuarios = i.payload.doc.data().usuarios;
+          this.db.collection('chats').doc(this.semilla).collection("messages").doc(hora+":"+d.getMilliseconds()).set({ sender, message, hora, type, usuarios}).then(item=>{
+            conect.unsubscribe();
+          }).catch(e=>{ });
+        });
+      });
     }
   }
 

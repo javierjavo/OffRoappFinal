@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, IonicPage, AlertController } from 'ionic-angular';
 import { AngularFirestore, AngularFirestoreCollection} from 'angularfire2/firestore';
 import { AngularFireAuth } from 'angularfire2/auth';
-
 /*
   MSGS: detalles con la mensajeria en db local
 */
@@ -38,7 +37,7 @@ export class GruposPage {
 
   constructor(private afAuth: AngularFireAuth, private db: AngularFirestore, 
     public navCtrl: NavController, public navParams: NavParams,private alertc: AlertController) {
-
+      
   }
 
   showmsg(i:Ichats){
@@ -84,6 +83,7 @@ export class GruposPage {
               id: item.id,
               status:item.status
             }
+            //guardo la lista de chats de los mensajes
             return auxli;
             //this.lichats.push(auxli);
           }));
