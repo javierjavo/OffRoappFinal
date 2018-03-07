@@ -172,8 +172,14 @@ export class GruposPage {
                   let d = new Date();
                   let hora:string = d.getFullYear()+":"+d.getMonth()+":"+d.getDay()+":"+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
                   let type = "buttons";
-                  this.db.collection('chats').doc(semilla).collection("messages").doc(hora+":"+d.getMilliseconds()+":sys").set({ sender, message, hora, type, id_chat}).then(item=>{
-                  }).catch(e=>{ });
+                  let conect = this.db.collection('ListaChats').doc("DomChats").collection(semilla).snapshotChanges().subscribe(x=>{
+                    x.map(i=>{
+                      let usuarios = i.payload.doc.data().usuarios;
+                      this.db.collection('chats').doc(semilla).collection("messages").doc(hora+":"+d.getMilliseconds()+":sys").set({ sender, message, hora, type, id_chat,usuarios}).then(item=>{
+                      }).catch(e=>{ });
+                    });
+                  });
+
                 }).catch(e=>{ });
                 
               }

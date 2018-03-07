@@ -58,7 +58,7 @@ export class ChatPage {
           let leido = true;
           let user = ms.payload.doc.data().usuarios;
           user.forEach(x=>{
-            if(x == this.sender && ms.payload.doc.data().sender == "sys"){
+            if(x == this.sender ){
               leido = false;
             }
           });
