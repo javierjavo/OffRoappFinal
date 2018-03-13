@@ -47,7 +47,6 @@ export class ChatPage {
       this.message="";
       this.semilla = navParams.get('semilla');
       this.name = navParams.get('name');
-      
   }
   
   ngOnInit(){  //a quí se manda el username para consultar los chat
@@ -56,7 +55,8 @@ export class ChatPage {
       this.postCol.snapshotChanges(['added', 'modified']).subscribe( (mesages)=>{
         let newmsgs:any = mesages.map(ms=>{
           let leido = true;
-          let user = ms.payload.doc.data().usuarios;
+          let user = [];
+          user = ms.payload.doc.data().usuarios;
           user.forEach(x=>{
             if(x == this.sender ){
               leido = false;
@@ -102,6 +102,7 @@ export class ChatPage {
           batch.commit().then(()=>{ }).catch(e=>{ 
             console.log(e);
           });
+
           //aqui debe guardarse una copia local de los mensajes y listo
           /*
           db = this.storage.get(this.semilla);
@@ -168,12 +169,39 @@ export class ChatPage {
 
   requestAcept(it){
     let user = it.message.split(", ")[0].substring(7);
-    this.db.doc('ListaChats/'+user+'/codes/'+it.id_chat).update({ status:1 }).then(()=>{
-      this.db.doc('chats/'+this.semilla+"/messages/"+it.id).update({
-        message:user+" aceptado por "+  this.sender,
-        type:"sys"
-      }).then(()=>{});
+
+    let c = this.db.collection('ListaChats').doc("DomChats").collection(this.semilla).snapshotChanges().subscribe( (mesages)=>{
+      let us=[];
+      let id;
+      mesages.map(s=>{
+        id= s.payload.doc.id;
+        us = s.payload.doc.data().usuarios;
+        us.push(user);
+        let batch = this.db.firestore.batch();
+        let ref = this.db.collection('ListaChats').doc("DomChats").collection(this.semilla).doc(id).ref;
+        batch.update(ref,{
+          usuarios:us
+        });
+        batch.commit().then(()=>{ }).catch(e=>{ 
+          console.log(e);
+        });
+        console.log(id);
+      }); 
+      this.db.doc('ListaChats/'+user+'/codes/'+it.id_chat).update({ status:1 }).then(()=>{
+        //test
+        let sender = "system";
+        let message = user+" aceptado por "+  this.sender;
+        let d = new Date();
+        let hora:string = d.getFullYear()+":"+d.getMonth()+":"+d.getDay()+":"+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
+        let type = "sys";
+        this.db.collection('chats').doc(this.semilla).collection("messages").doc(hora+":"+d.getMilliseconds()+":sys").set({ sender, message, hora, type, usuarios:us}).then(item=>{
+        }).catch(e=>{ });
+        //
+        this.db.doc('chats/'+this.semilla+"/messages/"+it.id).delete().then(()=>{});
+      });
+      c.unsubscribe();
     });
+    
   }
 
   requestDecline(it){

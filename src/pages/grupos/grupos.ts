@@ -172,7 +172,7 @@ export class GruposPage {
                   let d = new Date();
                   let hora:string = d.getFullYear()+":"+d.getMonth()+":"+d.getDay()+":"+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
                   let type = "buttons";
-                  let conect = this.db.collection('ListaChats').doc("DomChats").collection(semilla).snapshotChanges().subscribe(x=>{
+                  this.db.collection('ListaChats').doc("DomChats").collection(semilla).snapshotChanges().subscribe(x=>{
                     x.map(i=>{
                       let usuarios = i.payload.doc.data().usuarios;
                       this.db.collection('chats').doc(semilla).collection("messages").doc(hora+":"+d.getMilliseconds()+":sys").set({ sender, message, hora, type, id_chat,usuarios}).then(item=>{
@@ -291,8 +291,20 @@ export class GruposPage {
         let d = new Date();
         let hora:string = d.getFullYear()+":"+d.getMonth()+":"+d.getDay()+":"+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
         let type = "sys";
-        this.db.collection('chats').doc(item.semilla).collection("messages").doc(hora+":"+d.getMilliseconds()+":sys").set({ sender, message, hora, type}).then(item=>{
-        }).catch(e=>{ });
+        
+        let conect = this.db.collection('ListaChats').doc("DomChats").collection(item.semilla).snapshotChanges().subscribe(x=>{
+          x.map(i=>{
+            let usuarios = i.payload.doc.data().usuarios;
+            let us =[];
+            usuarios.forEach(element => {
+              if(element != this.afAuth.auth.currentUser.email)
+              us.push(element);
+            });
+            this.db.collection('chats').doc(item.semilla).collection("messages").doc(hora+":"+d.getMilliseconds()).set({ sender, message, hora, type, usuarios:us}).then(item=>{
+              conect.unsubscribe();
+            }).catch(e=>{ });
+          });
+        });
       }
       this.db.doc('ListaChats/'+this.afAuth.auth.currentUser.email+"/codes/"+item.id).delete().then(()=>{
       });
