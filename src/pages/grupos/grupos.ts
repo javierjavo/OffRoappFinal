@@ -73,7 +73,7 @@ export class GruposPage {
       this.codeschats.forEach(item=>{
         this.lichats = [];
         this.lichatcolection = this.db.collection('ListaChats').doc("DomChats").collection(item.semilla);
-        this.lichatcolection.snapshotChanges().subscribe(itemchat => {
+        this.lichatcolection.snapshotChanges( ).subscribe(itemchat => {
           let it:Ichats[] = (itemchat.map(li_item=>{
             let auxli:Ichats={
               semilla:li_item.payload.doc.data().semilla,
@@ -158,7 +158,7 @@ export class GruposPage {
             }
               
             let docRef = this.db.collection('ListaChats').doc("DomChats").collection(semilla);
-            docRef.snapshotChanges().subscribe(x=>{
+            let s2 = docRef.snapshotChanges().subscribe(x=>{
               if(x.length==0){
                 //no existe el elemento
                 this.msg("not found","El Chat no existe aun, intenta crearlo",this.addChat());
@@ -172,17 +172,18 @@ export class GruposPage {
                   let d = new Date();
                   let hora:string = d.getFullYear()+":"+d.getMonth()+":"+d.getDay()+":"+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
                   let type = "buttons";
-                  this.db.collection('ListaChats').doc("DomChats").collection(semilla).snapshotChanges().subscribe(x=>{
+                  let s = this.db.collection('ListaChats').doc("DomChats").collection(semilla).snapshotChanges().subscribe(x=>{
                     x.map(i=>{
                       let usuarios = i.payload.doc.data().usuarios;
                       this.db.collection('chats').doc(semilla).collection("messages").doc(hora+":"+d.getMilliseconds()+":sys").set({ sender, message, hora, type, id_chat,usuarios}).then(item=>{
+                        s.unsubscribe();
                       }).catch(e=>{ });
                     });
                   });
 
                 }).catch(e=>{ });
-                
               }
+              s2.unsubscribe();
             });
           }
           else{
@@ -242,7 +243,7 @@ export class GruposPage {
   }
 
   Delete(item){
-    let itemc = this.db.collection('ListaChats').doc("DomChats").collection(item.semilla).snapshotChanges().subscribe(x=>{
+    let itemc = this.db.collection('ListaChats').doc("DomChats").collection(item.semilla).snapshotChanges( ['added'] ).subscribe(x=>{
       let res = x.map(y=>{
         return {
           administrador:y.payload.doc.data().administrador,
@@ -253,24 +254,29 @@ export class GruposPage {
           id:y.payload.doc.id
         }
       });
+
+      console.log(res[0].usuarios.length);
+      
       //si es la ultima persona en el chat se elimina todo sin guardar
       if(res[0].usuarios.length-1==0){
-        alert("eliminando permanentemente el grupo");
+        alert(res[0].usuarios.length+"eliminando permanentemente el grupo");
         this.db.doc('ListaChats/DomChats/'+item.semilla+"/"+res[0].id).delete().then(()=>{
           this.db.doc('chats/'+item.semilla).delete().then(()=>{
+
           });
         });
         
       }else{
         //si el admin sale asigna a otro admin
+        let list=[];
+        res[0].usuarios.forEach(element => {
+          if(this.afAuth.auth.currentUser.email!=element)
+            list.push(element);
+        });
+        res[0].usuarios = list;
         if(res[0].administrador==this.afAuth.auth.currentUser.email){
-          let list=[];
-          res[0].usuarios.forEach(element => {
-            if(res[0].administrador!=element)
-              list.push(element);
-          });
-          res[0].usuarios = list;
           res[0].administrador = list[0];
+        }
           let batch = this.db.firestore.batch();
           let ref = this.db.collection('ListaChats').doc("DomChats").collection(item.semilla).doc(res[0].id).ref;
           batch.update(ref,{
@@ -284,7 +290,7 @@ export class GruposPage {
             console.log(e);
           });
 
-        }
+        
         //manda un mensaje al grupo de despedida
         let sender = "system";
         let message = this.afAuth.auth.currentUser.email+" ha abandonado el grupo";
@@ -295,18 +301,14 @@ export class GruposPage {
         let conect = this.db.collection('ListaChats').doc("DomChats").collection(item.semilla).snapshotChanges().subscribe(x=>{
           x.map(i=>{
             let usuarios = i.payload.doc.data().usuarios;
-            let us =[];
-            usuarios.forEach(element => {
-              if(element != this.afAuth.auth.currentUser.email)
-              us.push(element);
-            });
-            this.db.collection('chats').doc(item.semilla).collection("messages").doc(hora+":"+d.getMilliseconds()).set({ sender, message, hora, type, usuarios:us}).then(item=>{
+            this.db.collection('chats').doc(item.semilla).collection("messages").doc(hora+":"+d.getMilliseconds()).set({ sender, message, hora, type, usuarios}).then(item=>{
               conect.unsubscribe();
             }).catch(e=>{ });
           });
         });
       }
       this.db.doc('ListaChats/'+this.afAuth.auth.currentUser.email+"/codes/"+item.id).delete().then(()=>{
+        
       });
       itemc.unsubscribe();
     });
