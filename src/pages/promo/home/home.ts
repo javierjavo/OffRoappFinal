@@ -14,7 +14,6 @@ export class HomePage {
   }
 
   ionViewDidLoad(){
-
     let i = 0;
     while(i<10){
       this.listBanner.push({ejemplo:this.limiteAnunciosCache++});

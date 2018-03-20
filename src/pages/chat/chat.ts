@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { AngularFireAuth } from 'angularfire2/auth';
+import { Storage } from '@ionic/storage';
+
 /**
  * Generated class for the ChatPage page.
  *
@@ -20,9 +22,10 @@ interface Post{
 @IonicPage()
 @Component({
   selector: 'page-chat',
-  templateUrl: 'chat.html',
+  templateUrl: 'chat.html'
 })
 export class ChatPage {
+  @ViewChild('content') content:any;
   semilla = "";
   name = "";
   message="";
@@ -31,10 +34,10 @@ export class ChatPage {
   ActualS="";
 
   postCol: AngularFirestoreCollection<Post>;
-  post: Post[]=[];
+  post: Post[]=new Array;
 
   constructor(public user:AngularFireAuth,private db: AngularFirestore, 
-    public navCtrl: NavController, public navParams: NavParams) {
+    public navCtrl: NavController, public navParams: NavParams, public storage: Storage) {
       if(this.user.auth.currentUser==null){
         this.navCtrl.setRoot('TabsHomePage');
         return;
@@ -47,12 +50,26 @@ export class ChatPage {
       this.message="";
       this.semilla = navParams.get('semilla');
       this.name = navParams.get('name');
+      
   }
   
-  ngOnInit(){  //a quí se manda el username para consultar los chat
+  ionViewDidLoad(){
+    this.storage.get(this.semilla).then((data) => {
+      if(data){
+        this.post = data;
+        this.ActualS = this.post[this.post.length-1].sender;
+        setTimeout(() => this.content.scrollToBottom(100), 300);
+        this.inicial();
+      } 
+    });
+  }
+
+  inicial(){  //a quí se manda el username para consultar los chat
     if(this.semilla){
+      //this.content.scrollToBottom(100);
       this.postCol = this.db.collection('chats').doc(this.semilla).collection("messages");
-      this.postCol.snapshotChanges(['added', 'modified']).subscribe( (mesages)=>{
+      this.postCol.snapshotChanges(['added']).subscribe( (mesages)=>{
+        //get de mensajes aqui
         let newmsgs:any = mesages.map(ms=>{
           let leido = true;
           let user = [];
@@ -99,18 +116,9 @@ export class ChatPage {
           batch.update(ref,{
             usuarios:us
           });
-          batch.commit().then(()=>{ }).catch(e=>{ 
-            console.log(e);
+          batch.commit().then(()=>{ }).catch(e=>{
+            //se actualizo correctamente el archivo
           });
-
-          //aqui debe guardarse una copia local de los mensajes y listo
-          /*
-          db = this.storage.get(this.semilla);
-          //hay que ver si ya existe si ya existe hay que editarlo no solo guardarlo de nuevo
-          db.push(s);
-          this.storage.set(this.semilla,db);
-          return db;
-          */
           return s;
         });
         if(newmsgs != 0){
@@ -127,6 +135,15 @@ export class ChatPage {
             });
             if(!exist){
               this.post.push(y);
+              this.storage.set(this.semilla,this.post).then(()=>{
+                this.storage.get(this.semilla).then(data => {
+                  //justo aqui es donde se desplaza al fondo en automatico
+                  this.content.scrollToBottom(300);
+                  //this.post = data;
+                  //console.log(this.post);
+                });
+              });
+              
               //let sc = document.getElementById('scrollArea') as HTMLElement;
               //sc.scrollTop = sc.scrollHeight;
               //sc.scrollTo(0,sc.scrollHeight);
@@ -136,7 +153,6 @@ export class ChatPage {
         }
       });
     }
-  
   }
 
   sendMessage(){
@@ -156,6 +172,21 @@ export class ChatPage {
         });
       });
     }
+  }
+
+  borrarMensajes(){
+    let ps = [{
+      sender : "system",
+      message : "Mensajes anteriores a esta fecha eliminados",
+      type: "sys",
+      hora : new Date()+"",
+      displaysedner:"",
+      id:"",
+      id_chat:""
+    }];
+    this.ActualS = "system";
+    this.storage.set(this.semilla,ps)
+    this.post = ps;
   }
 
   sendMedia(){
@@ -182,10 +213,7 @@ export class ChatPage {
         batch.update(ref,{
           usuarios:us
         });
-        batch.commit().then(()=>{ }).catch(e=>{ 
-          console.log(e);
-        });
-        console.log(id);
+        batch.commit().then(()=>{ }).catch(e=>{ });
       }); 
       this.db.doc('ListaChats/'+user+'/codes/'+it.id_chat).update({ status:1 }).then(()=>{
         //test

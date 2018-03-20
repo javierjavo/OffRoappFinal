@@ -122,12 +122,20 @@ page-chat {
         height: 10vh;
     }
 
+    .btnBorrar{
+        position: relative;
+        left: 50vw;
+    }
+    
     .chatbg{
         position: relative;
-        overflow-y: scroll;
-        height: 90vh;
-        top: 0vh;
+        height: 93vh;
+        top: 1.5vh;
         background: linear-gradient( rgba(44, 85, 79, 0.5),rgba(65, 63, 63, 0.5),rgba(102, 114, 129, 0.5));
+    }
+
+    .chatbg > div{
+        overflow-x: hidden;
     }
 
     .bgfooter{

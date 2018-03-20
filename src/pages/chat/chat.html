@@ -2,7 +2,9 @@
   <ion-navbar color="primary">
 
     <ion-title>
-      <h1 class="title"> {{ name }}</h1>
+      <h1 class="title"> {{ name }}
+        <ion-icon class="btnBorrar" (click)="borrarMensajes()" md="md-trash"></ion-icon>
+      </h1>
     </ion-title>
   </ion-navbar>
 </ion-header>
@@ -62,9 +64,8 @@
   <div id="check-point"></div>   
 </ion-list>
 -->
-<ion-content  class="chatbg" >
-  <div *ngFor="let it of post" >
-   
+<ion-content #content class="chatbg">
+  <div *ngFor="let it of post">
     <div class="maincontainer" *ngIf='it.type=="buttons"'><br>
       <div class="chatC">
         <div class="contmessviewerC">
