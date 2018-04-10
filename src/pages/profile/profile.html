@@ -1,0 +1,24 @@
+
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>profile</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding>
+  <canvas id="canvas" width="500" height="500"></canvas>
+  <div class="imageProfile">
+    <img id="source" src="../../assets/imgs/final.jpg" alt="">
+  </div>
+  <div class="info">
+    <div class="level">
+      <h1 class="itemlevel">Nivel {{nivel}}</h1>
+      <div id="inline">
+        <input class="itemlevel" type="text" [(ngModel)]="username.data" (ngModelChange)='actualizar()'>
+      </div>
+    </div>
+    <progress class="ancho" max="{{limitLoad}}" value={{xp}}></progress>
+  </div>
+</ion-content>

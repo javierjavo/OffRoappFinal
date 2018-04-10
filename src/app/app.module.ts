@@ -6,6 +6,8 @@ import { MyApp } from './app.component';
 import { ContactPage } from '../pages/promo/contact/contact';
 import { HomePage } from '../pages/promo/home/home';
 import { GruposPage } from '../pages/grupos/grupos';
+import { ProfilePage } from '../pages/profile/profile';
+
 //import { RedicPage } from '../pages/redic/redic';
 
 import { SQLite } from '@ionic-native/sqlite';
@@ -23,7 +25,8 @@ import { IonicStorageModule } from '@ionic/storage';
     MyApp,
     ContactPage,
     HomePage,
-    GruposPage
+    GruposPage,
+    ProfilePage
   ],
   imports: [
     BrowserModule,
@@ -42,7 +45,8 @@ import { IonicStorageModule } from '@ionic/storage';
     MyApp,
     ContactPage,
     HomePage,
-    GruposPage
+    GruposPage,
+    ProfilePage
   ],
   providers: [
     StatusBar,

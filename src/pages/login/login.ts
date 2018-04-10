@@ -4,7 +4,7 @@ import { User } from "../../models/user";
 import { AngularFireAuth } from "angularfire2/auth";
 //import { TasksServiceProvider } from '../../providers/tasks-service/tasks-service';
 import { Storage } from '@ionic/storage';
-import { Flogin } from '../../models/Flogin';
+import { Flogin, UserName } from '../../models/Flogin';
 
 @IonicPage()
 @Component({
@@ -14,7 +14,7 @@ import { Flogin } from '../../models/Flogin';
 export class LoginPage {
   FLogList = {} as Flogin;
   user = {} as User;
-  userName = "";
+  userName = {} as UserName;
   userPass = "";
   remember;
 
@@ -30,7 +30,7 @@ export class LoginPage {
   ionViewWillEnter(){
     this.storage.get("sesion").then(data=>{
       if(data)
-        this.navCtrl.setRoot(data);
+        this.navCtrl.setRoot("TabsHomePage");
     });
     //console.log(this.afAuth.authState);
     //if(this.afAuth.auth.currentUser.email!=null)
@@ -50,17 +50,22 @@ export class LoginPage {
   async login(user: User) {
     try {
       this.afAuth.auth.signInWithEmailAndPassword(user.email, user.password);
-      let a = this.afAuth.authState.subscribe(data => {
-        
+      let a = this.afAuth.authState.subscribe(datal => {
           this.toast.create({
               message: 'Let\'s roll, '+user.email,
               duration: 1000,
           }).present();
           if(this.remember){
-            this.userName = this.user.email;
+            this.userName.data = this.user.email;
             this.userPass = this.user.password;
             this.saveLoginInfo(this.userName, this.userPass);
-            this.storage.set("sesion",'TabsHomePage');
+            this.storage.get(datal.email).then(data => {
+              this.userName.data = (data)?data:datal.email;
+              this.storage.set("mail",datal.email);
+              this.storage.set("sesion",this.userName.data);
+              return;
+            });
+
             //  window.location.reload();
           }else{
             this.removeLoginInfo();

@@ -1,12 +1,11 @@
-<ion-menu side="left" [content]="content">
-         
+<ion-menu side="left" [content]="content">  
     <ion-content  class="fondomenu">
         <ion-list class="scroll" id="menuUser">
             <div class="perfil">
                 <img src={{userpick}} alt={{username}}>
                 <div>
-                    <h4>{{username}}</h4>
-                    <ion-icon (click)="go_profile()" ios="md-cog" md="md-cog"></ion-icon>
+                    <h4>{{username.data}}</h4>
+                    <ion-icon (click)="go_profile()" ios="md-cog" md="md-cog" menuClose></ion-icon>
                 </div>
             </div>
             <div class="menu">

@@ -4,3 +4,7 @@ export interface Flogin {
         pass:string
     }];
 }
+
+export interface UserName {
+    data: string;
+}

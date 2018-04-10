@@ -3,12 +3,13 @@ import { Platform,Nav, ToastController} from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 //import { RedicPage } from '../pages/redic/redic';
+import { ProfilePage } from '../pages/profile/profile';
 import { GruposPage } from '../pages/grupos/grupos';
 import { TabsHomePage } from '../pages/promo/tabshome/tabshome';
 import { NavController } from 'ionic-angular';
 import { AngularFireAuth } from "angularfire2/auth";
 import { Storage } from '@ionic/storage';
-import { Flogin } from '../models/Flogin';
+import { Flogin, UserName } from '../models/Flogin';
 
 @Component({
   templateUrl: 'app.html'
@@ -16,7 +17,7 @@ import { Flogin } from '../models/Flogin';
 export class MyApp {
   rootPage:any = "LoginPage";
   @ViewChild(Nav) nav: Nav;
-  username:string = "";
+  username = {} as UserName;
   userpick:string = "";
   FLogList = {} as Flogin;
   
@@ -31,10 +32,6 @@ export class MyApp {
       this.readLoginInfo();
       this.afAuth.authState.subscribe(data => {
         if(data && data.email.length>0 && data.uid.length>0){
-          if(data.displayName!=null)
-            this.username = data.displayName;
-          else
-            this.username = data.email;
           if(data.photoURL!=null)
             this.userpick = data.photoURL;
           else
@@ -65,13 +62,29 @@ export class MyApp {
   async flogin(mail,pass){
     try {
       this.afAuth.auth.signInWithEmailAndPassword(mail, pass);
-      this.afAuth.authState.subscribe(data => {
-        if(data && data.email.length>0 && data.uid.length>0){
+      this.afAuth.authState.subscribe(datal => {
+        if(datal && datal.email.length>0 && datal.uid.length>0){
           this.toast.create({
-              message: 'Let\'s roll, '+data.email,
+              message: 'Let\'s roll, '+datal.email,
               duration: 1000,
           }).present();
-          this.storage.set("sesion",'TabsHomePage');
+          this.storage.get(datal.email).then(data => {
+            this.username.data = (data)?data:datal.email;
+            this.storage.set("mail",datal.email);
+            this.storage.set("sesion",this.username.data);
+            return;
+          });
+
+          let a = setInterval(() => { 
+            this.storage.get(datal.email).then(data => {
+              this.username.data = (this.username.data==data)?this.username.data:data;
+              this.storage.get("sesion").then(x=>{
+                if(!x) clearInterval(a);
+              });
+              return;
+            });
+          }, 5000);
+         
           this.nav.setRoot('TabsHomePage');
         }
         return;          
@@ -90,19 +103,19 @@ export class MyApp {
   }
 
   go_profile(){
-    //this.nav.push(ProfilePage);
-    alert("Editar Perfil");
+    this.nav.push(ProfilePage);
   }
 
   go_logout(){
     this.userpick ="";
-    this.username ="";
+    this.username.data ="";
     this.afAuth.auth.signOut();
     this.toast.create({
       message: "logout susses",
       duration: 1000,
     }).present();
     this.storage.remove("sesion");
+    this.storage.remove("mail");
     this.readLoginInfo();
     this.nav.setRoot('LoginPage');
   }
