@@ -50,7 +50,7 @@ export class ChatPage {
       this.message="";
       this.semilla = navParams.get('semilla');
       this.name = navParams.get('name');
-      
+      this.inicial();
   }
   
   ionViewDidLoad(){
@@ -59,7 +59,7 @@ export class ChatPage {
         this.post = data;
         this.ActualS = this.post[this.post.length-1].sender;
         setTimeout(() => this.content.scrollToBottom(100), 300);
-        this.inicial();
+        
       } 
     });
   }

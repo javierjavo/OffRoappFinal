@@ -20,6 +20,7 @@ export class LoginPage {
 
   constructor(private afAuth: AngularFireAuth, public navCtrl: NavController,
     private toast: ToastController, public navParams: NavParams, public storage: Storage) {
+      
       //storage.clear();
       /*this.storage.set('prueba', 10);
       this.storage.get('prueba').then((data) => {
@@ -58,12 +59,13 @@ export class LoginPage {
           if(this.remember){
             this.userName.data = this.user.email;
             this.userPass = this.user.password;
-            this.saveLoginInfo(this.userName, this.userPass);
-            this.storage.get(datal.email).then(data => {
-              this.userName.data = (data)?data:datal.email;
-              this.storage.set("mail",datal.email);
-              this.storage.set("sesion",this.userName.data);
-              return;
+            this.saveLoginInfo(this.userName.data, this.userPass);
+
+            this.storage.get(this.user.email).then(data => {
+                this.userName.data = (data)?data:this.user.email;
+                this.storage.set("mail",this.user.email);
+                this.storage.set("sesion",this.userName.data);
+                return;
             });
 
             //  window.location.reload();
@@ -97,6 +99,7 @@ export class LoginPage {
       });
       if(bol){
         accou.push(a);
+        this.FLogList = accou;
         this.storage.set('cuentas', accou);
       }
     })

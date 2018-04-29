@@ -25,7 +25,7 @@
         
         <div class="scroll" id="menuPrincipal">
             <div class="contenido" *ngFor="let t of FLogList.data">
-                <div  *ngIf='t.user'>
+                <div *ngIf='t.user'>
                     <div class="cuenta" (click)='flogin(t.user,t.pass)' menuClose>
                         <img src="../assets/imgs/pick.jpg" alt="porfile">
                         <h4>{{ t.user }}</h4>
