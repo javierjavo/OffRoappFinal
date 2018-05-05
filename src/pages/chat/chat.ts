@@ -58,8 +58,7 @@ export class ChatPage {
       if(data){
         this.post = data;
         this.ActualS = this.post[this.post.length-1].sender;
-        setTimeout(() => this.content.scrollToBottom(100), 300);
-        
+        setTimeout(() => this.content.scrollToBottom(0),300);
       } 
     });
   }
@@ -138,7 +137,27 @@ export class ChatPage {
               this.storage.set(this.semilla,this.post).then(()=>{
                 this.storage.get(this.semilla).then(data => {
                   //justo aqui es donde se desplaza al fondo en automatico
-                  this.content.scrollToBottom(300);
+                  let sz=120;
+                  this.post.forEach(x=>{
+                    if(x.message){
+                      if(x.displaysedner)
+                        sz+=60;
+                      if(x.sender=="sys")
+                        sz+=200;
+                      sz+=15;//hora
+                      sz+=(1+((15*x.message.length/(window.innerWidth*.95))))*30;
+                    }
+                    console.log(window.innerHeight,20+(this.post.length*60),sz);
+                  });
+                  if(sz>window.innerHeight)
+                    this.content.scrollToBottom(300)
+                  //try{
+                  //  setTimeout(() => this.content.scrollToBottom(300),1);
+                  //}catch(e){
+                  //  console.log(e);
+                  //}
+                  //this.content.scrollToBottom(300);
+                  
                   //this.post = data;
                   //console.log(this.post);
                 });

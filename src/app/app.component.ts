@@ -30,13 +30,14 @@ export class MyApp {
       statusBar.styleDefault();
       splashScreen.hide();
       this.readLoginInfo();
+
       this.afAuth.authState.subscribe(data => {
         if(data && data.email.length>0 && data.uid.length>0){
           if(data.photoURL!=null)
             this.userpick = data.photoURL;
           else
             this.userpick = "../assets/imgs/final.jpg";
-          
+          this.loged();
           let sc = document.getElementById('menuUser') as HTMLElement;
           let mp = document.getElementById('menuPrincipal') as HTMLElement;
           sc.style.display="block";
@@ -48,6 +49,26 @@ export class MyApp {
           mp.style.display="block";
         }     
       });
+
+    });
+  }
+
+  loged(){
+    this.storage.get("mail").then(y=>{
+      if(y){
+        var a = setInterval(() => {
+          this.storage.get(y).then(data => {
+            if(this.username.data!=data)
+              this.username.data = data;    
+            this.storage.get("sesion").then(x=>{
+              if(!x) clearInterval(a);
+            });
+            return;
+          });
+        }, 2000);
+      }else
+        setTimeout(this.loged(),1000);
+        
     });
   }
 
@@ -74,17 +95,6 @@ export class MyApp {
             this.storage.set("sesion",this.username.data);
             return;
           });
-
-          let a = setInterval(() => { 
-            this.storage.get(datal.email).then(data => {
-              this.username.data = (this.username.data==data)?this.username.data:data;
-              this.storage.get("sesion").then(x=>{
-                if(!x) clearInterval(a);
-              });
-              return;
-            });
-          }, 5000);
-         
           this.nav.setRoot('TabsHomePage');
         }
         return;          

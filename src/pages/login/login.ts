@@ -52,27 +52,24 @@ export class LoginPage {
     try {
       this.afAuth.auth.signInWithEmailAndPassword(user.email, user.password);
       let a = this.afAuth.authState.subscribe(datal => {
-          this.toast.create({
-              message: 'Let\'s roll, '+user.email,
-              duration: 1000,
-          }).present();
-          if(this.remember){
-            this.userName.data = this.user.email;
-            this.userPass = this.user.password;
-            this.saveLoginInfo(this.userName.data, this.userPass);
-
-            this.storage.get(this.user.email).then(data => {
-                this.userName.data = (data)?data:this.user.email;
-                this.storage.set("mail",this.user.email);
-                this.storage.set("sesion",this.userName.data);
-                return;
-            });
-
-            //  window.location.reload();
-          }else{
-            this.removeLoginInfo();
-          }
-          this.navCtrl.setRoot('TabsHomePage');
+        this.toast.create({
+          message: 'Let\'s roll, '+user.email,
+          duration: 1000,
+        }).present();
+        this.storage.get(this.user.email).then(data => {
+          this.userName.data = (data)?data:this.user.email;
+          this.storage.set("mail",this.user.email);
+          this.storage.set("sesion",this.userName.data);
+        });
+        if(this.remember){
+          this.userName.data = this.user.email;
+          this.userPass = this.user.password;
+          this.saveLoginInfo(this.userName.data, this.userPass);
+          //  window.location.reload();
+        }else{
+          this.removeLoginInfo();
+        }
+        this.navCtrl.setRoot('TabsHomePage');
         a.unsubscribe();
         return;          
       });
