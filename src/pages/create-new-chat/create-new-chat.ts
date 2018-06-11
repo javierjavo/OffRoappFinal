@@ -32,11 +32,9 @@ export class CreateNewChatPage {
     }else{
       alert("por favor rellene todos los campos para continuar");
     }
-    
   }
 
   crearGrupo(name,semilla){
-    //
     let url = this.pic;
     let administrador = this.afAuth.auth.currentUser.email;
     let usuarios:Array<string> = [];
@@ -44,7 +42,7 @@ export class CreateNewChatPage {
     this.db.collection('ListaChats').doc("DomChats").collection(this.codigo).add({ administrador, name, semilla, url, usuarios}).then(item=>{
       this.db.collection('ListaChats').doc(this.afAuth.auth.currentUser.email).collection("codes")
       .add({ semilla, statis:1 }).then(data=>{
-        alert("listo");
+      //  alert("listo");
       }).catch(error=>{  });
     }).catch(e=>{ });
   }

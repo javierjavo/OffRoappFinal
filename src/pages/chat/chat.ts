@@ -133,36 +133,30 @@ export class ChatPage {
               }
             });
             if(!exist){
-              this.post.push(y);
-              this.storage.set(this.semilla,this.post).then(()=>{
-                this.storage.get(this.semilla).then(data => {
-                  //justo aqui es donde se desplaza al fondo en automatico
-                  let sz=120;
-                  this.post.forEach(x=>{
-                    if(x.message){
-                      if(x.displaysedner)
-                        sz+=60;
-                      if(x.sender=="sys")
-                        sz+=200;
-                      sz+=15;//hora
-                      sz+=(1+((15*x.message.length/(window.innerWidth*.95))))*30;
-                    }
-                    console.log(window.innerHeight,20+(this.post.length*60),sz);
+              if(y.type != "buttons"){
+                this.post.push(y);
+                this.storage.set(this.semilla,this.post).then(()=>{
+                  this.storage.get(this.semilla).then(data => {
+                    //justo aqui es donde se desplaza al fondo en automatico
+                    let sz=120;
+                    this.post.forEach(x=>{
+                      if(x.message){
+                        if(x.displaysedner)
+                          sz+=60;
+                        if(x.sender=="sys")
+                          sz+=200;
+                        sz+=15;//hora
+                        sz+=(1+((15*x.message.length/(window.innerWidth*.95))))*30;
+                      }
+                    });
+                    console.log(sz)
+                    if(sz>window.innerHeight)
+                      this.content.scrollToBottom(300)
                   });
-                  if(sz>window.innerHeight)
-                    this.content.scrollToBottom(300)
-                  //try{
-                  //  setTimeout(() => this.content.scrollToBottom(300),1);
-                  //}catch(e){
-                  //  console.log(e);
-                  //}
-                  //this.content.scrollToBottom(300);
-                  
-                  //this.post = data;
-                  //console.log(this.post);
                 });
-              });
-              
+              }
+              else
+                this.post.push(y);
               //let sc = document.getElementById('scrollArea') as HTMLElement;
               //sc.scrollTop = sc.scrollHeight;
               //sc.scrollTo(0,sc.scrollHeight);
@@ -218,6 +212,7 @@ export class ChatPage {
   }
 
   requestAcept(it){
+    it.type="respuesto"
     let user = it.message.split(", ")[0].substring(7);
 
     let c = this.db.collection('ListaChats').doc("DomChats").collection(this.semilla).snapshotChanges().subscribe( (mesages)=>{
@@ -234,6 +229,7 @@ export class ChatPage {
         });
         batch.commit().then(()=>{ }).catch(e=>{ });
       }); 
+      
       this.db.doc('ListaChats/'+user+'/codes/'+it.id_chat).update({ status:1 }).then(()=>{
         //test
         let sender = "system";
@@ -246,19 +242,58 @@ export class ChatPage {
         //
         this.db.doc('chats/'+this.semilla+"/messages/"+it.id).delete().then(()=>{});
       });
+      let s = []
+      this.post.forEach( x=>{
+        if(x.type != "buttons")
+          s.push(x);
+      });
+      this.post = s;
+      this.storage.set(this.semilla,this.post)
       c.unsubscribe();
     });
     
   }
 
   requestDecline(it){
+    it.type="respuesto"
     let user = it.message.split(", ")[0].substring(7);
-    this.db.doc('ListaChats/'+user+'/codes/'+it.id_chat).delete().then(()=>{
-      this.db.doc('chats/'+this.semilla+"/messages/"+it.id).update({
-        message: user+" rechazado por "+  this.sender,
-        type:"sys"
-      }).then(()=>{});
-    });;
+
+    let c = this.db.collection('ListaChats').doc("DomChats").collection(this.semilla).snapshotChanges().subscribe( (mesages)=>{
+      let us=[];
+      let id;
+      mesages.map(s=>{
+        id= s.payload.doc.id;
+        us = s.payload.doc.data().usuarios;
+        us.push(user);
+        let batch = this.db.firestore.batch();
+        let ref = this.db.collection('ListaChats').doc("DomChats").collection(this.semilla).doc(id).ref;
+        batch.update(ref,{
+          usuarios:us
+        });
+        batch.commit().then(()=>{ }).catch(e=>{ });
+      }); 
+      
+      this.db.doc('ListaChats/'+user+'/codes/'+it.id_chat).delete().then(()=>{
+        //test
+        let sender = "system";
+        let message = user+" Rechazado por "+  this.sender;
+        let d = new Date();
+        let hora:string = d.getFullYear()+":"+d.getMonth()+":"+d.getDay()+":"+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
+        let type = "sys";
+        this.db.collection('chats').doc(this.semilla).collection("messages").doc(hora+":"+d.getMilliseconds()+":sys").set({ sender, message, hora, type, usuarios:us}).then(item=>{
+        }).catch(e=>{ });
+        //
+        this.db.doc('chats/'+this.semilla+"/messages/"+it.id).delete().then(()=>{});
+      });
+      let s = []
+      this.post.forEach( x=>{
+        if(x.type != "buttons")
+          s.push(x);
+      });
+      this.post = s;
+      this.storage.set(this.semilla,this.post)
+      c.unsubscribe();
+    });
   }
 
 }
